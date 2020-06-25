@@ -1,0 +1,56 @@
+{
+    "menu": [
+        {
+            "url": "/",
+            "name": "Dashboard",
+            "slug": "dashboard",
+            "badge": "2",
+            "badgeClass": "badge badge-warning badge-pill float-right",
+            "icon": "feather icon-home"
+        },
+        {
+            "url": "",
+            "name": "User",
+            "icon": "feather icon-user",
+            "submenu": [
+              {
+                "url": "app-user-list",
+                "name": "List",
+                "icon": "feather icon-circle",
+                "i18n": "nav.app_user_list"
+              },
+              {
+                "url": "app-user-view",
+                "name": "View",
+                "icon": "feather icon-circle",
+                "i18n": "nav.app_user_view"
+              },
+              {
+                "url": "app-user-edit",
+                "name": "Edit",
+                "icon": "feather icon-circle",
+                "i18n": "nav.app_user_edit"
+              }
+            ]
+          },
+          {
+            "url": "",
+            "name": "Map",
+            "icon": "feather icon-map",
+            "submenu": [
+              {
+                "url": "app-map-list",
+                "name": "Map",
+                "icon": "feather icon-circle",
+                "i18n": "nav.app_map_list"
+              },
+              {
+                "url": "app-map-add",
+                "name": "Creat",
+                "icon": "feather icon-circle",
+                "i18n": "nav.app_map_add"
+              }
+            ]
+          }
+    ]
+}
