@@ -1,95 +1,188 @@
 
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Map Layouts')
+@section('title', 'Create Camp')
 
 @section('content')
-<style>
-    .form-group {
-         margin-bottom: 0.3rem !important;
-    }
-</style>    
+@section('page-style')  
+    <link rel="stylesheet" href="{{URL::to('/')}}/js/scripts/lib/spectrum.css">        
+    <style>
+        .form-group {
+            margin-bottom: 0.3rem !important;
+        }
+        .error {
+            color:red;
+        }
+    </style>    
+@endsection
+
 <!-- Basic Vertical form layout section start -->
 <section id="basic-vertical-layouts">
   <div class="row match-height">
       <div class="col-md-3 col-12">
-          <div class="card">
+          <div class="card" id="camp_card" >
               <div class="card-header">
-                  <h4 class="card-title">Map Inform</h4>
+                <h4 class="card-title">
+                    Camp Inform
+                    <span><button type="button" onClick="clearForm()" class="btn btn-sm btn-primary mr-1" Title="Clear">Clear</button></span>
+                </h4>
               </div>
               <div class="card-content">
-                  <div class="card-body">
-                      <form class="form form-vertical">
+                  <div class="card-body pt-0">
+                      <form class="form form-vertical" method="post" id="form" >
                           <div class="form-body">
                               <div class="row">
+                                  <div class="col-12">
+                                        <label class="error" ></label>
+                                  </div>    
                                   <div class="col-6">
                                       <div class="form-group">
                                           <label for="name">Name</label>
-                                          <input type="text" id="name" class="form-control" name="name" placeholder="Name">
+                                          <div class="controls">
+                                            <input type="text" id="name" class="form-control" name="name" placeholder="Name">
+                                          </div>
                                       </div>
                                   </div>
                                   <div class="col-6">
                                       <div class="form-group">
                                           <label for="street">Street</label>
-                                          <input type="text" id="street" class="form-control" name="street" placeholder="Street">
+                                          <div class="controls">
+                                            <input type="text" id="street" class="form-control"  name="street" placeholder="Street">
+                                          </div>  
                                       </div>
                                   </div>
                                   <div class="col-6">
                                       <div class="form-group">
                                           <label for="direction">Direction</label>
-                                          <input type="text" id="direction" class="form-control" name="diection" placeholder="Direction">
+                                          <div class="controls">
+                                            <!-- <input type="text" id="direction" class="form-control"  name="diection" placeholder="Direction"> -->
+                                            <select class="form-control" id="direction" name="direction" >
+                                                <option value="west">West</option>
+                                                <option value="east">East</option>
+                                                <option value="south">South</option>
+                                                <option value="north">North</option>
+                                            </select>    
+                                          </div>  
                                       </div>
                                   </div>
+                                  
                                   <div class="col-6">
                                       <div class="form-group">
-                                          <label for="type">Type</label>
-                                          <input type="text" id="type" class="form-control" name="type" >
+                                          <label for="type">Type</label>                                         
+                                          <select id="type" class="form-control" onChange="changeType()">
+                                            <option value="rect" selected >Rect</option>
+                                            <option value="polygon" >Polygon</option>
+                                            <option value="polyline">Polyline</option>
+                                            <!-- <option value="line" >Line</option>
+                                            <option value="circle" >Circle</option>
+                                            <option value="ellipse" >Ellipse</option> -->
+                                          </select>
                                       </div>
                                   </div>
+                                 
                                   <div class="col-6">
                                       <div class="form-group">
-                                          <label for="originx">OriginX</label>
-                                          <input type="number" id="originx" class="form-control" name="originX" >
-                                      </div>
-                                  </div>
-                                  <div class="col-6">
-                                      <div class="form-group">
-                                          <label for="originy">OriginY</label>
-                                          <input type="number" id="originy" class="form-control" name="originy" >
+                                          <label for="left">Left</label>
+                                          <div class="controls">
+                                                <input type="number" id="left" class="form-control"  name="left" placeholder="Left">
+                                          </div>
                                       </div>
                                   </div>
                                   <div class="col-6">
                                       <div class="form-group">
                                           <label for="top">Top</label>
-                                          <input type="number" id="top" class="form-control" name="top" >
+                                          <div class="controls">
+                                            <input type="number" id="top" class="form-control"  name="top" >
+                                          </div>  
                                       </div>
                                   </div>
-                                  <div class="col-12">
+                                  <div class="col-6">
                                       <div class="form-group">
-                                          <label for="left">Left</label>
-                                          <input type="number" id="left" class="form-control" name="left" placeholder="Left">
+                                          <label for="width">Width</label>
+                                          <div class="controls">
+                                            <input type="number" id="width" class="form-control"  name="width" placeholder="Width">
+                                            <input type="hidden" id="scaleX" value="1" />
+                                            <input type="hidden" id="scaleY" value="1" />
+                                          </div>  
                                       </div>
                                   </div>
-                                  <div class="col-12">
+                                  <div class="col-6">
                                       <div class="form-group">
-                                          <label for="top">Height</label>
-                                          <input type="number" id="height" class="form-control" name="height" placeholder="Height">
+                                          <label for="height">Height</label>
+                                          <div class="controls">
+                                                <input type="number" id="height" class="form-control" name="height" placeholder="Height">
+                                          </div>      
                                       </div>
                                   </div>
-                                  <div class="col-12">
+                                  <div class="col-6">
                                       <div class="form-group">
-                                          <label for="top">Width</label>
-                                          <input type="number" id="width" class="form-control" name="width" placeholder="Width">
+                                          <label for="fill">Fill Color</label>
+                                          <div>
+                                            <input type="text" id="fill" class="form-control" name="fill" placeholder="Fill">
+                                          </div>
                                       </div>
                                   </div>
-                  
-                                    <div class="col-12">
-                                            <button type="submit" class="btn btn-primary mr-1 mb-1">Create</button>  
-                                            <button type="button" id="poly" class="btn btn-outline-warning mr-1 mb-1 pull-right">Drag</button>
-                                            <button type="button" id="getdata" onClick="getData()" class="btn btn-outline-warning mr-1 mb-1 pull-right">Data</button>
-                                            
-                                    </div>
+                                  
+                                  <div class="col-12 mb-1" id="points_list" style="display:none">
+                                     <div class="row" >
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label for="fill">
+                                                    Points
+                                                    <button class="btn btn-sm btn-secondary" type="button"  onClick="addPoints( 0 , 0)"><i class="feather icon-plus-circle"></i>  </button>                                              
+                                                </label>                                                
+                                            </div>
+                                        </div>   
+                                      </div>  
+                                      <div class="row" id="points_1">
+                                        <div class="col-5">
+                                                <div class="form-group">                                                      
+                                                    <div>                                          
+                                                        <input type="number"  class="form-control" name="x[]" placeholder="X" >
+                                                    </div>    
+                                                </div>
+                                        </div>      
+                                        <div class="col-7">
+                                            <fieldset>                                                
+                                                <div class="input-group">                                                                                                        
+                                                    <input type="number" class="form-control" name="y[]" placeholder="Y" >
+                                                    <div class="input-group-append" id="button-addon2">
+                                                        <button class="btn btn-secondary" type="button" onClick="delPoints(1)"><i class="feather icon-minus-circle"></i>  </button>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>                                       
+                                      </div>
+                                  </div>                                  
+                                  
+                                    <div class="col-12 mb-1">   
+                                        <div class="row">   
+                                            <div class="col-6">
+                                                <div class="form-group">                                  
+                                                    <button type="button" onClick="createObject()"  class="btn btn-primary"  title="Create/Update">Create/Update</button>                                              
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group">                                  
+                                                    <button type="button" id="getdata" onClick="getData()" class="btn btn-warning pull-right" title="Get Data">Get Data</button>
+                                                </div>
+                                            </div>        
+                                        </div>    
+                                    </div>                                    
                                 </div>
+                                <!---->
+                                <hr class="my-2" />
+                                <div class="row">                                        
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="camp_name" placeholder="Campground name">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <button type="button" onClick="CrateCamp()" class="btn btn-warning pull-right">Add Camp</button>
+                                    </div>    
+                                </div>
+                                <!---->
                             </div>
                         </form>
                     </div>
@@ -99,7 +192,11 @@
       <div class="col-md-9 col-12">
           <div class="card">
               <div class="card-header">
-                  <h4 class="card-title">Map Area</h4>
+                  <h4 class="card-title">
+                    <span>Camp Area</span>
+                    <span><button type="button" id="poly" class="btn btn-sm btn-primary mr-1" Title="Drag">Drag</button></span>
+                </h4>
+                  
               </div>
               <div class="card-content">
                   <div class="card-body">                    
@@ -117,10 +214,14 @@
 <!-- // Basic Vertical form layout section end -->
 
 @endsection
-
+@section('vendor-script')        
+        <script src="{{URL::to('/')}}/vendors/js/forms/validation/jqBootstrapValidation.js"></script>
+@endsection
 @section('page-script')  
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.6.2/fabric.min.js">  </script>  -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.4.0/fabric.min.js">  </script> 
-  <script src="{{URL::to('/')}}/js/scripts/pages/app_map_add.js"></script>
+  <script src="{{URL::to('/')}}/js/scripts/lib/spectrum.js"></script>    
+  <script src="{{URL::to('/')}}/js/scripts/pages/app_map_add.js"></script>  
+
 @endsection
 

@@ -19,7 +19,7 @@ class MapPagesController extends Controller
     // User View Page
     public function map_add(){
       $breadcrumbs = [
-          ['link'=>"dashboard-analytics",'name'=>"Home"], ['link'=>"dashboard-analytics",'name'=>"Pages"], ['name'=>"Map Add"]
+          ['link'=>"dashboard-analytics",'name'=>"Home"], ['link'=>"dashboard-analytics",'name'=>"Pages"], ['name'=>"Camp Add"]
       ];
       return view('/pages/map/app-map-add', [
           'breadcrumbs' => $breadcrumbs

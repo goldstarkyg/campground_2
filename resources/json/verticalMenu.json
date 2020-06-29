@@ -35,12 +35,12 @@
           },
           {
             "url": "",
-            "name": "Map",
+            "name": "Campground",
             "icon": "feather icon-map",
             "submenu": [
               {
                 "url": "app-map-list",
-                "name": "Map",
+                "name": "List",
                 "icon": "feather icon-circle",
                 "i18n": "nav.app_map_list"
               },
