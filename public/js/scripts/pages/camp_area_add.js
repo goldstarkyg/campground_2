@@ -205,18 +205,21 @@ function onObjectMoving(e) {
 }
 //get json data from canvas
 function getData() {
-    var data = JSON.stringify(canvas.toJSON(['id','name','direction' ,'width']));
-    $('#canvas_data').text(data);
+    var data = JSON.stringify(canvas.toJSON(['id','name','direction', 'street','width']));
+    $('#canvas_data').text(data);    
 }
 //create object
 function createObject() {  
-    
-    cur_object = canvas.getActiveObject();   
-    if(cur_object != null) canvas.getActiveObject().remove();
+       
     var type = $('#type').val();
     var name = $('#name').val();
     if(name == '') {
         $(".error").html("Name is requried.");
+        return false;
+    }
+    var name_flag = compareName(name);
+    if(name_flag) {
+        $(".error").html("Name can not duplicate.");
         return false;
     }
     var street = $('#street').val();  
@@ -273,6 +276,8 @@ function createObject() {
             }
         }
     }
+    cur_object = canvas.getActiveObject();   
+    if(cur_object != null) canvas.getActiveObject().remove();
     var item = {};
     item.id = name;      
     item.name = name;
@@ -346,9 +351,12 @@ function changeType() {
 //clear form and cur_object
 function clearForm() {
     cur_object = {};
-    $('#form input[type="text"]').val("");
-    $('#form input[type="number"]').val("");
-    $('#form textarea').val("");    
+    var name = $('#name').val();
+    if(name == '') name = 0;
+    $('#name').val(parseInt(name)+1); 
+    //$('#form input[type="text"]').val("");
+    //$('#form input[type="number"]').val("");
+    //$('#form textarea').val("");    
     point_order = 0;
     $('#points_list').html("");
     var html = "";
@@ -363,7 +371,7 @@ function clearForm() {
     html +='    </div>';
     html +='</div>';
     $('#points_list').append(html);
-    $('#camp_card').height(camp_height_default); 
+    $('#camp_card').height(camp_height_default+25); 
 }
 
 //get camp_list
@@ -390,3 +398,46 @@ function getCampList(){
     });
 }
 getCampList();
+
+//compare object id
+function compareName(name) {
+    var flag = false;
+    var data = canvas.toJSON(['id','name','direction','street','width']);
+    var list = data.objects;
+    for(var i = 0 ; i < list.length; i++) {
+        if(name == list[i].name) {
+            flag = true;
+            break;
+        }
+    }
+    return flag;
+}
+
+//create camp area
+function CrateCampArea() {
+    var data = canvas.toJSON(['id','name','direction', 'street','width']);
+    
+    var url= '/creatcamparea';
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: {
+            _token : token ,
+            id : id,
+            name : name,
+            desc : desc,
+            status : status
+        },
+        dataType: "json",
+        success: function (res) {
+           var camp_list = res.camp_list;
+           var html = '';
+           html += '<option value="0"> Select </option>';
+           for(var i = 0; i < res.count; i++) {
+               var obj = camp_list[i];
+                html += '<option value="'+obj.id+'"> '+obj.name+' </option>';
+           }
+           $('#camp_name').html(html);
+        }
+    });
+}

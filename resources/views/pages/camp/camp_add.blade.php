@@ -58,7 +58,7 @@
                                         <div class="row">   
                                             <div class="col-6">
                                                 <div class="form-group">                                  
-                                                    <button type="button" onClick="addCamp()"  class="btn btn-primary"  title="Create/Update">Create/Update</button>                                              
+                                                    <button type="button" onClick="addCamp()"  class="btn btn-warning"  title="Create/Update">Create/Update</button>                                              
                                                 </div>
                                             </div>                                            
                                         </div>    

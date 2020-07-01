@@ -28,4 +28,17 @@ class CampAreaController extends Controller
         $ret['count']= count($camp_list);         
         return Response::json($ret) ;    
     }
+
+    public function creatCampArea() {
+        $camp = $request->except('_token','id');
+        $id = $request->get('id');
+        if($id > 0) {
+            $camp_update = DB::table('camp_list')->where('id', $id)->update($camp);        
+        }else {
+            if(!empty($camp)) $camp_insert = DB::table('camp_list')->insert($camp);        
+        }
+        $ret = array();
+        $ret['code']= '200';         
+        return Response::json($ret) ;
+    }
 }

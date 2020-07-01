@@ -49,7 +49,7 @@
                                       <div class="form-group">
                                           <label for="name">Name</label>
                                           <div class="controls">
-                                            <input type="text" id="name" class="form-control" name="name" placeholder="Name">
+                                            <input type="number" id="name" class="form-control" name="name" placeholder="Name">
                                           </div>
                                       </div>
                                   </div>
@@ -165,18 +165,20 @@
                                       </div>
                                   </div>                                  
                                   
-                                    <div class="col-12 mb-1">   
+                                    <div class="col-12">   
                                         <div class="row">   
-                                            <div class="col-6">
-                                                <div class="form-group">                                  
-                                                    <button type="button" onClick="createObject()"  class="btn btn-primary"  title="Create/Update">Create/Update</button>                                              
-                                                </div>
+                                            <div class="col-6">                                                
                                             </div>
                                             <div class="col-6">
                                                 <div class="form-group">                                  
+                                                    <button type="button" onClick="createObject()"  class="btn btn-warning pull-right"  title="Create/Update">Add/Update</button>                                              
+                                                </div>
+                                            </div>
+                                            <!-- <div class="col-6">
+                                                <div class="form-group">                                  
                                                     <button type="button" id="getdata" onClick="getData()" class="btn btn-warning pull-right" title="Get Data">Get Data</button>
                                                 </div>
-                                            </div>        
+                                            </div>         -->
                                         </div>    
                                     </div>                                    
                                 </div>
@@ -192,7 +194,7 @@
                                        </div>                                        
                                     </div>
                                     <div class="col-6">
-                                        <button type="button" onClick="CrateCamp()" class="btn btn-warning pull-right">Add Camp</button>
+                                        <button type="button" onClick="CrateCampArea()" class="btn btn-warning pull-right">Add Camp &nbsp;</button>
                                     </div>    
                                 </div>
                                 <!---->
@@ -232,10 +234,13 @@
 @endsection
 
 @section('page-script')  
+  <script>    
+        var token = "{{ csrf_token() }}";
+  </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.4.0/fabric.min.js">  </script> 
   <script src="{{URL::to('/')}}/js/scripts/forms/select/form-select2.js"></script>
   <script src="{{URL::to('/')}}/js/scripts/lib/spectrum.js"></script> 
-  <script src="{{URL::to('/')}}/js/scripts/pages/app_map_add.js"></script>  
+  <script src="{{URL::to('/')}}/js/scripts/pages/camp_area_add.js"></script>  
   
 @endsection
 

@@ -31,6 +31,7 @@ Route::get('/delcampajax', 'Backend\CampController@delCampAjax');
 
 Route::get('/camp_area_add', 'Backend\CampAreaController@campAreaAdd');
 Route::get('/getcampnamelist', 'Backend\CampAreaController@getCampNameList');
+Route::get('/creatcamparea', 'Backend\CampAreaController@creatCampArea');
 
 
 // Route Dashboards

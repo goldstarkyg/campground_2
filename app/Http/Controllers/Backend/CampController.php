@@ -64,8 +64,8 @@ class CampController extends Controller
                 return $active;                  
             })
             ->addColumn('actions',function($camp) {
-                $actions = '<a href="#" onClick="campEdit('.$camp->id.')" data-toggle="tooltip" data-placement="top" title="Edit Camp" ><i class="fa fa-eye text-success"></i></a>&nbsp; &nbsp;
-                            <a href="#" onClick="campDel('.$camp->id.')" data-toggle="tooltip" data-placement="top" title="Delete Camp"><i class="fa fa-pencil text-warning"></i></a>&nbsp; &nbsp;';
+                $actions = '<a href="#" onClick="campEdit('.$camp->id.')" data-toggle="tooltip" data-placement="top" title="Edit Camp" ><i class="fa fa-pencil text-success"></i></a>&nbsp; &nbsp;
+                            <a href="#" onClick="campDel('.$camp->id.')" data-toggle="tooltip" data-placement="top" title="Delete Camp"><i class="fa fa-trash text-warning"></i></a>&nbsp; &nbsp;';
                 // if ((Sentinel::getUser()->id != $user->id) && ($user->id != 1)) {
                 //     $actions .= '<a href='. route('users.confirm-delete', $user->id) .' data-id="'.$user->id.'" data-toggle="modal" data-target="#delete_confirm"><i class="fa fa-trash text-danger"></i></a>';
                 // }
