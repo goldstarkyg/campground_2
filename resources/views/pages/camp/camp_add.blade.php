@@ -28,10 +28,23 @@
                                       <div class="form-group">
                                           <label for="name">Camp Name</label>
                                           <div class="controls">
+                                            <input type="hidden" id="id" name="id" value='0' />  
                                             <input type="text" id="name" class="form-control" name="name" placeholder="Name">
                                           </div>
                                       </div>
                                     </div>
+                                    <div class="col-12 mb-1">
+                                      <div class="form-group">
+                                          <label for="name">Camp Status</label>
+                                          <div class="controls">
+                                              <select name="status" id="status" class="form-control">
+                                                    <option value="1">Active</option>
+                                                    <option value="0">Inactive</option>
+                                              </select>
+                                          </div>
+                                      </div>
+                                    </div>
+
                                     <div class="col-12">
                                       <div class="form-group">
                                           <label for="street">Description</label>
@@ -45,7 +58,7 @@
                                         <div class="row">   
                                             <div class="col-6">
                                                 <div class="form-group">                                  
-                                                    <button type="button" onClick="createObject()"  class="btn btn-primary"  title="Create/Update">Create/Update</button>                                              
+                                                    <button type="button" onClick="addCamp()"  class="btn btn-primary"  title="Create/Update">Create/Update</button>                                              
                                                 </div>
                                             </div>                                            
                                         </div>    
@@ -78,13 +91,17 @@
                                                     <thead>
                                                         <tr>                                                           
                                                             <th>Camp name</th>
-                                                            <th>Desc </th>
+                                                            <th>Desc</th>
+                                                            <th>Staus</th>
+                                                            <th>Actions</th>
                                                         </tr>
                                                     </thead>
                                                     <tfoot>
                                                     <tr>
                                                         <th>Camp name</th>
                                                         <th>Desc</th>                                                        
+                                                        <th>Status</th>
+                                                        <th>Actions</th>                                                        
                                                     </tr>
                                                 </tfoot>
 
@@ -106,7 +123,10 @@
 <!-- // Basic Vertical form layout section end -->
 
 @endsection
-@section('page-script')    
+@section('page-script')
+    <script>    
+        var token = "{{ csrf_token() }}";
+    </script>
     <script src="{{URL::to('/')}}/vendors/js/tables/datatable/pdfmake.min.js"></script>
     <script src="{{URL::to('/')}}/vendors/js/tables/datatable/vfs_fonts.js"></script>    
     <script src="{{URL::to('/')}}/vendors/js/tables/datatable/datatables.min.js"></script>

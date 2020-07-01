@@ -24,6 +24,9 @@ Route::get('/app-user-edit', 'UserPagesController@user_edit');
 Route::get('/camp_list', 'Backend\CampController@campList');
 Route::get('/camp_add', 'Backend\CampController@campAdd');
 Route::get('/getcamplist', 'Backend\CampController@getCampList');
+Route::post('/addcampajax', 'Backend\CampController@addCampAjax');
+Route::get('/editcampajax', 'Backend\CampController@editCampAjax');
+Route::get('/delcampajax', 'Backend\CampController@delCampAjax');
 Route::get('/camp_area_add', 'Backend\CampAreaController@campAreaAdd');
 
 
