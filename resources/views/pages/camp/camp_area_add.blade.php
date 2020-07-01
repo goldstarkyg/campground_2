@@ -1,9 +1,8 @@
 
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Create Camp')
+@section('title', 'Create Camp Area')
 
-@section('content')
 @section('page-style')  
     <link rel="stylesheet" href="{{URL::to('/')}}/js/scripts/lib/spectrum.css">        
     <style>
@@ -16,6 +15,8 @@
     </style>    
 @endsection
 
+
+@section('content')
 <!-- Basic Vertical form layout section start -->
 <section id="basic-vertical-layouts">
   <div class="row match-height">
@@ -23,7 +24,7 @@
           <div class="card" id="camp_card" >
               <div class="card-header">
                 <h4 class="card-title">
-                    Camp Inform
+                    Camp Area Inform
                     <span><button type="button" onClick="clearForm()" class="btn btn-sm btn-primary mr-1" Title="Clear">Clear</button></span>
                 </h4>
               </div>
@@ -214,14 +215,10 @@
 <!-- // Basic Vertical form layout section end -->
 
 @endsection
-@section('vendor-script')        
-        <script src="{{URL::to('/')}}/vendors/js/forms/validation/jqBootstrapValidation.js"></script>
-@endsection
-@section('page-script')  
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.6.2/fabric.min.js">  </script>  -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.4.0/fabric.min.js">  </script> 
-  <script src="{{URL::to('/')}}/js/scripts/lib/spectrum.js"></script>    
-  <script src="{{URL::to('/')}}/js/scripts/pages/app_map_add.js"></script>  
 
+@section('page-script')  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.4.0/fabric.min.js">  </script> 
+  <script src="{{URL::to('/')}}/js/scripts/lib/spectrum.js"></script> 
+  <script src="{{URL::to('/')}}/js/scripts/pages/app_map_add.js"></script>  
 @endsection
 

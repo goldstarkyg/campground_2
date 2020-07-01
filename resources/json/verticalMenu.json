@@ -39,14 +39,20 @@
             "icon": "feather icon-map",
             "submenu": [
               {
-                "url": "app-map-list",
-                "name": "List",
+                "url": "camp_list",
+                "name": "Camp List",
                 "icon": "feather icon-circle",
                 "i18n": "nav.app_map_list"
               },
               {
-                "url": "app-map-add",
-                "name": "Creat",
+                "url": "camp_add",
+                "name": "Create Camp",
+                "icon": "feather icon-circle",
+                "i18n": "nav.app_map_list"
+              },
+              {
+                "url": "camp_area_add",
+                "name": "Camp Area",
                 "icon": "feather icon-circle",
                 "i18n": "nav.app_map_add"
               }

@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Map List Page')
+@section('title', 'Camp List')
 
 @section('vendor-style')
         {{-- Page Css files --}}
