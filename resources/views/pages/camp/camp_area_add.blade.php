@@ -2,15 +2,24 @@
 @extends('layouts/contentLayoutMaster')
 
 @section('title', 'Create Camp Area')
-
+@section('vendor-style')      
+    <link rel="stylesheet" href="{{URL::to('/')}}/vendors/css/forms/select/select2.min.css">     
+@endsection
 @section('page-style')  
-    <link rel="stylesheet" href="{{URL::to('/')}}/js/scripts/lib/spectrum.css">        
+    <link rel="stylesheet" href="{{URL::to('/')}}/js/scripts/lib/spectrum.css">       
     <style>
         .form-group {
             margin-bottom: 0.3rem !important;
         }
         .error {
             color:red;
+        }
+        .select2-container--classic .select2-selection--single, .select2-container--default .select2-selection--single {
+            min-height: 38px;
+            padding: 5px;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {          
+            top: 6px;
         }
     </style>    
 @endsection
@@ -174,10 +183,13 @@
                                 <!---->
                                 <hr class="my-2" />
                                 <div class="row">                                        
-                                    <div class="col-6">
+                                    <div class="col-6">                                                                                
                                         <div class="form-group">
-                                            <input type="text" class="form-control" name="camp_name" placeholder="Campground name">
-                                        </div>
+                                            <select id="camp_name" name="camp_name" class="select2 form-control">
+                                                <!-- <option value="square">Square</option>
+                                                <option value="rectangle">Rectangle</option> -->
+                                            </select>
+                                       </div>                                        
                                     </div>
                                     <div class="col-6">
                                         <button type="button" onClick="CrateCamp()" class="btn btn-warning pull-right">Add Camp</button>
@@ -215,10 +227,15 @@
 <!-- // Basic Vertical form layout section end -->
 
 @endsection
+@section('vendor-script')
+        <script src="{{URL::to('/')}}/vendors/js/forms/select/select2.full.min.js"></script>
+@endsection
 
 @section('page-script')  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.4.0/fabric.min.js">  </script> 
+  <script src="{{URL::to('/')}}/js/scripts/forms/select/form-select2.js"></script>
   <script src="{{URL::to('/')}}/js/scripts/lib/spectrum.js"></script> 
   <script src="{{URL::to('/')}}/js/scripts/pages/app_map_add.js"></script>  
+  
 @endsection
 

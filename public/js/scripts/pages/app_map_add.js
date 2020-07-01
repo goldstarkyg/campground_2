@@ -365,3 +365,28 @@ function clearForm() {
     $('#points_list').append(html);
     $('#camp_card').height(camp_height_default); 
 }
+
+//get camp_list
+function getCampList(){
+    $('#camp_name').html('');
+    var url= '/getcampnamelist';
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: {
+            //id : id,
+        },
+        dataType: "json",
+        success: function (res) {
+           var camp_list = res.camp_list;
+           var html = '';
+           html += '<option value="0"> Select </option>';
+           for(var i = 0; i < res.count; i++) {
+               var obj = camp_list[i];
+                html += '<option value="'+obj.id+'"> '+obj.name+' </option>';
+           }
+           $('#camp_name').html(html);
+        }
+    });
+}
+getCampList();
