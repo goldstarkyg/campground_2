@@ -213,6 +213,7 @@ function createObject() {
     cur_object = canvas.getActiveObject();    
     var type = $('#type').val();
     var name = $('#name').val();
+    var angle = 0;
     if(name == '') {
         $(".error").html("Name is requried.");
         return false;
@@ -225,7 +226,10 @@ function createObject() {
             return false;
         }        
         re_top =  parseInt($('#top').val()) + parseInt($('#height').val()) +10 ;
-    }
+        
+    }else{
+        angle = cur_object.angle;
+    } 
     var street = $('#street').val();  
     if(street == '') {
         $(".error").html("Street is requried.");
@@ -291,6 +295,7 @@ function createObject() {
     item.top = top;
     item.width = width;
     item.height = height;
+    item.angle = angle;
     item.scaleX = $('#scaleX').val();
     item.scaleY = $('#scaleY').val();
     var fill_color = $('#fill').val();
@@ -452,7 +457,93 @@ function CrateCampArea() {
     }
 }
 
-// get camp map
-function campMap(camp_id) {
 
-} 
+// get camp map
+$('#camp_name').change(function(){
+    var camp_id = $(this).val();
+    var url= '/getcampmap';
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: {
+            camp_id : camp_id,
+        },
+        dataType: "json",
+        success: function (res) {
+           var data = res.data;
+           createCamp(data);
+        }
+    });
+});
+
+function createCamp(data) {  
+    canvas.clear().renderAll();
+    canvas.hoverCursor = 'pointer';
+    for(var i = 0; i < data.length ; i++) {       
+        var obj = data[i];
+        var item = {};
+        item.id = obj.name;
+        item.camp_id = obj.camp_id;
+        item.camp_name = obj.camp_name;
+        item.camp_desc = obj.camp_desc;      
+        item.name = obj.name;
+        item.street = obj.street;    
+        item.direction = obj.direction;
+        item.left = parseInt(obj.left) ;
+        item.top = parseInt(obj.top);
+        item.width = parseInt(obj.width);
+        item.height = parseInt(obj.height);
+        item.scaleX = obj.scaleX;
+        item.scaleY = obj.scaleY;        
+        item.fill = obj.fill;
+        item.stroke = obj.stroke;
+        item.strokeWidth = obj.strokeWidth; 
+        item.strokeMiterLimit = obj.strokeMiterLimit;   
+        item.angle = obj.angle; 
+        
+        if(obj.type == 'rect') {
+            var obj_item = new fabric.Rect(item);
+            //obj_item.set('selectable', false);
+            canvas.add(obj_item);           
+            // var text = new fabric.Text(obj.name, {
+            //     fontSize: 12,
+            //     left: parseInt(parseInt(obj.width)/2),
+            //     top: parseInt(parseInt(obj.height)/2),               
+            //     originX: 'center',
+            //     originY: 'center'
+            //   });
+            // var group = new fabric.Group([ obj_item, text ], {
+            //     left: parseInt(obj.left),
+            //     top: parseInt(obj.top)
+            // });           
+            // canvas.add(group);            
+        }
+        if(obj.type == 'polygon' || obj.type=='polyline') {
+            var points = [];
+            var point_list = obj.points;
+            for(var m = 0; m < point_list.length; m++) {
+                var ob = {};
+                ob.x = parseInt(point_list[m].x);
+                ob.y = parseInt(point_list[m].y);
+                points[m] = ob;
+            }      
+            var obj_item = new fabric.Polyline(points,item);      
+            //obj_item.set('selectable', false);
+            canvas.add(obj_item);; // Line, Rect, Circle, Ellipse, Polygon, Polyline , Triangle(3 angle)
+            // var text = new fabric.Text(obj.name, {
+            //     fontSize: 12,
+            //     left: parseInt(parseInt(obj.width)/2),
+            //     top: parseInt(parseInt(obj.height)/2),               
+            //     originX: 'center',
+            //     originY: 'center'
+            //   });
+            // var group = new fabric.Group([ obj_item, text ], {
+            //     left: parseInt(obj.left),
+            //     top: parseInt(obj.top)
+            // });          
+            // canvas.add(group);
+        }
+       
+    }    
+}
+
