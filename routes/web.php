@@ -21,17 +21,18 @@ Route::get('/app-user-view', 'UserPagesController@user_view');
 Route::get('/app-user-edit', 'UserPagesController@user_edit');
 
 // campground pages
-Route::get('/camp_list', 'Backend\CampController@campList');
-Route::get('/camp_add', 'Backend\CampController@campAdd');
+Route::get('/camplist', 'Backend\CampController@campList');
+Route::get('/campaddname', 'Backend\CampController@campAddName');
+Route::get('/camparealist', 'Backend\CampController@campAreaList');
 
 Route::get('/getcamplist', 'Backend\CampController@getCampList');
 Route::post('/addcampajax', 'Backend\CampController@addCampAjax');
 Route::get('/editcampajax', 'Backend\CampController@editCampAjax');
 Route::get('/delcampajax', 'Backend\CampController@delCampAjax');
 
-Route::get('/camp_area_add', 'Backend\CampAreaController@campAreaAdd');
+Route::get('/campareaadd', 'Backend\CampAreaController@campAreaAdd');
 Route::get('/getcampnamelist', 'Backend\CampAreaController@getCampNameList');
-Route::get('/creatcamparea', 'Backend\CampAreaController@creatCampArea');
+Route::post('/creatcamparea', 'Backend\CampAreaController@creatCampArea');
 
 
 // Route Dashboards

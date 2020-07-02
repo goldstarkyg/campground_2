@@ -39,22 +39,22 @@
             "icon": "feather icon-map",
             "submenu": [
               {
-                "url": "camp_list",
+                "url": "campaddname",
+                "name": "Create camp name ",
+                "icon": "feather icon-circle",
+                "i18n": "nav.creat_camp"
+              },
+              {
+                "url": "campareaadd",
+                "name": "Camp Area Map",
+                "icon": "feather icon-circle",
+                "i18n": "nav.camp_area_map"
+              },
+              {
+                "url": "camplist",
                 "name": "Camp List",
                 "icon": "feather icon-circle",
-                "i18n": "nav.app_map_list"
-              },
-              {
-                "url": "camp_add",
-                "name": "Create Camp",
-                "icon": "feather icon-circle",
-                "i18n": "nav.app_map_list"
-              },
-              {
-                "url": "camp_area_add",
-                "name": "Camp Area",
-                "icon": "feather icon-circle",
-                "i18n": "nav.app_map_add"
+                "i18n": "nav.camp_list"
               }
             ]
           }

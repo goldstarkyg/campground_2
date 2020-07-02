@@ -22,7 +22,7 @@ class CampController extends Controller
       ]);
     }
 
-    public function campAdd(){
+    public function campAddName(){
         $breadcrumbs = [
             ['link'=>"dashboard-analytics",'name'=>"Home"], ['link'=>"dashboard-analytics",'name'=>"Pages"], ['name'=>"Camp Add"]
         ];
@@ -102,6 +102,21 @@ class CampController extends Controller
         $ret = array();
         $ret['code']= '200';         
         return Response::json($ret) ;        
+    }
+
+    public function campAreaList() {
+        $camp_list = DB::table('camp_area_relation  as car')
+                        ->leftjoin('camp_list as cl', 'cl.id', '=' , 'car.camp_id')
+                        ->leftjoin('camp_area as ca', 'ca.id', '=' , 'car.area_id')
+                        ->select(['car.*', 'cl.name as camp_name', 'ca.name as area_name'])
+                        ->get();
+        return DataTables::of($camp_list)            
+            ->addColumn('actions',function($camp) {
+                $actions = '<a href="#" onClick="campAreaMap('.$camp->camp_id.', '.$camp->area_id.')" data-toggle="tooltip" data-placement="top" title="View Map" ><i class="fa fa-eye text-success"></i></a>';
+                return $actions;
+            })
+            ->rawColumns(['actions'])
+            ->make(true);
     }
 
 }

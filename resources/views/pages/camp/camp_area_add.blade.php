@@ -195,8 +195,8 @@
                                     </div>
                                     <div class="col-6">
                                         <button type="button" onClick="CrateCampArea()" class="btn btn-warning pull-right">Add Camp &nbsp;</button>
-                                    </div>    
-                                </div>
+                                    </div>                                     
+                                </div>                                
                                 <!---->
                             </div>
                         </form>
@@ -237,7 +237,7 @@
   <script>    
         var token = "{{ csrf_token() }}";
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.4.0/fabric.min.js">  </script> 
+  <script src="{{URL::to('/')}}/js/scripts/lib/fabric_1.4.min.js">  </script> 
   <script src="{{URL::to('/')}}/js/scripts/forms/select/form-select2.js"></script>
   <script src="{{URL::to('/')}}/js/scripts/lib/spectrum.js"></script> 
   <script src="{{URL::to('/')}}/js/scripts/pages/camp_area_add.js"></script>  

@@ -210,17 +210,21 @@ function getData() {
 }
 //create object
 function createObject() {  
-       
+    cur_object = canvas.getActiveObject();    
     var type = $('#type').val();
     var name = $('#name').val();
     if(name == '') {
         $(".error").html("Name is requried.");
         return false;
     }
-    var name_flag = compareName(name);
-    if(name_flag) {
-        $(".error").html("Name can not duplicate.");
-        return false;
+    var re_top = $('#top').val();
+    if(cur_object == null) { 
+        var name_flag = compareName(name);
+        if(name_flag) {
+            $(".error").html("Name can not duplicate.");
+            return false;
+        }        
+        re_top =  parseInt($('#top').val()) + parseInt($('#height').val()) +10 ;
     }
     var street = $('#street').val();  
     if(street == '') {
@@ -276,7 +280,7 @@ function createObject() {
             }
         }
     }
-    cur_object = canvas.getActiveObject();   
+      
     if(cur_object != null) canvas.getActiveObject().remove();
     var item = {};
     item.id = name;      
@@ -304,6 +308,9 @@ function createObject() {
     }
     $(".error").html("");
     clearForm();   
+    //reset top
+   
+    $('#top').val(re_top)
 }
 
 $("#fill").spectrum({
@@ -388,7 +395,7 @@ function getCampList(){
         success: function (res) {
            var camp_list = res.camp_list;
            var html = '';
-           html += '<option value="0"> Select </option>';
+           html += '<option value="0"> Select Camp </option>';
            for(var i = 0; i < res.count; i++) {
                var obj = camp_list[i];
                 html += '<option value="'+obj.id+'"> '+obj.name+' </option>';
@@ -398,6 +405,7 @@ function getCampList(){
     });
 }
 getCampList();
+
 
 //compare object id
 function compareName(name) {
@@ -415,29 +423,20 @@ function compareName(name) {
 
 //create camp area
 function CrateCampArea() {
-    var data = canvas.toJSON(['id','name','direction', 'street','width']);
-    
+    var data = canvas.toJSON(['id','name','direction', 'street','width']);    
+    var camp_id = $('#camp_name').val();    
     var url= '/creatcamparea';
     $.ajax({
         type: "POST",
         url: url,
         data: {
             _token : token ,
-            id : id,
-            name : name,
-            desc : desc,
-            status : status
+            data : data.objects,
+            camp_id : camp_id
         },
         dataType: "json",
         success: function (res) {
-           var camp_list = res.camp_list;
-           var html = '';
-           html += '<option value="0"> Select </option>';
-           for(var i = 0; i < res.count; i++) {
-               var obj = camp_list[i];
-                html += '<option value="'+obj.id+'"> '+obj.name+' </option>';
-           }
-           $('#camp_name').html(html);
+           console.log(res);
         }
     });
 }

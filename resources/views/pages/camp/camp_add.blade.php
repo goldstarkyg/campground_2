@@ -1,7 +1,7 @@
 
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Create Camp')
+@section('title', 'Camp name')
 
 @section('vendor-style')
         {{-- vendor css files --}}
@@ -134,8 +134,7 @@
     <script src="{{URL::to('/')}}/vendors/js/tables/datatable/buttons.html5.min.js"></script>
     <script src="{{URL::to('/')}}/vendors/js/tables/datatable/buttons.print.min.js"></script>
     <script src="{{URL::to('/')}}/vendors/js/tables/datatable/buttons.bootstrap.min.js"></script>
-    <script src="{{URL::to('/')}}/vendors/js/tables/datatable/datatables.bootstrap4.min.js"></script>
-    <!-- <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script> -->
+    <script src="{{URL::to('/')}}/vendors/js/tables/datatable/datatables.bootstrap4.min.js"></script>    
     <script src="{{URL::to('/')}}/js/scripts/pages/camp_add.js"></script>  
 
 @endsection
