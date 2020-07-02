@@ -210,7 +210,8 @@
                   <h4 class="card-title">
                     <span>Camp Area</span>
                     <span><button type="button" id="poly" class="btn btn-sm btn-primary mr-1" Title="Drag">Drag</button></span>
-                </h4>
+                    <span id="area_mes" style="color:#095a2d; display:none"></span>
+                  </h4>
                   
               </div>
               <div class="card-content">

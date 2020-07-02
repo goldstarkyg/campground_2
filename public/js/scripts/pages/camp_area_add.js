@@ -425,18 +425,34 @@ function compareName(name) {
 function CrateCampArea() {
     var data = canvas.toJSON(['id','name','direction', 'street','width']);    
     var camp_id = $('#camp_name').val();    
-    var url= '/creatcamparea';
-    $.ajax({
-        type: "POST",
-        url: url,
-        data: {
-            _token : token ,
-            data : data.objects,
-            camp_id : camp_id
-        },
-        dataType: "json",
-        success: function (res) {
-           console.log(res);
-        }
-    });
+    if(camp_id > 0) {
+        var url= '/creatcamparea';
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                _token : token ,
+                data : data.objects,
+                camp_id : camp_id
+            },
+            dataType: "json",
+            success: function (res) {
+                $('#area_mes').text('This camp area saved successufully!');
+                $('#area_mes').css('color', '#126504');
+                $('#area_mes').fadeIn();
+                $('#area_mes').delay(2000).fadeOut();
+            console.log(res);
+            }
+        });
+    }else {
+        $('#area_mes').text('Please choose campground name!');
+        $('#area_mes').css('color', '#c30707');
+        $('#area_mes').fadeIn();
+        $('#area_mes').delay(2000).fadeOut();
+    }
 }
+
+// get camp map
+function campMap(camp_id) {
+
+} 

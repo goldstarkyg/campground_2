@@ -105,17 +105,19 @@ class CampController extends Controller
     }
 
     public function campAreaList() {
-        $camp_list = DB::table('camp_area_relation  as car')
-                        ->leftjoin('camp_list as cl', 'cl.id', '=' , 'car.camp_id')
-                        ->leftjoin('camp_area as ca', 'ca.id', '=' , 'car.area_id')
-                        ->select(['car.*', 'cl.name as camp_name', 'ca.name as area_name'])
+        $camp_list = DB::table('camp_list')                        
+                        ->select(['id', 'name'])
                         ->get();
-        return DataTables::of($camp_list)            
+        return DataTables::of($camp_list)  
+            ->editColumn('name',function($camp) {
+                $name = '<a href="#" onClick="campMap('.$camp->id.')" data-toggle="tooltip" data-placement="top" >'.$camp->name.'</a>';
+                return $name;
+            })          
             ->addColumn('actions',function($camp) {
-                $actions = '<a href="#" onClick="campAreaMap('.$camp->camp_id.', '.$camp->area_id.')" data-toggle="tooltip" data-placement="top" title="View Map" ><i class="fa fa-eye text-success"></i></a>';
+                $actions = '<a href="#" onClick="campMap('.$camp->id.')" data-toggle="tooltip" data-placement="top"  ><i class="fa fa-eye text-success"></i></a>';
                 return $actions;
             })
-            ->rawColumns(['actions'])
+            ->rawColumns(['name','actions'])
             ->make(true);
     }
 

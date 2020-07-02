@@ -42,8 +42,7 @@ class CampAreaController extends Controller
             for($i=0; $i < count($data); $i++) {
                $obj = $data[$i]; 
                $item = array();
-               $item['camp_id'] = $camp_id;
-               $item['area_id'] = $area_id;
+               $item['camp_id'] = $camp_id;             
                $item['type'] = $obj['type'];
                $item['name'] = $obj['name'];
                $item['street'] = $obj['street'];
@@ -53,13 +52,31 @@ class CampAreaController extends Controller
                $item['width'] = $obj['width'];
                $item['height'] = $obj['height'];
                $item['fill'] = $obj['fill'];
-               $item['points'] = json_encode($obj['points']);
+               if($obj['type'] == 'polygon' || $obj['type'] == 'polyline' ) {
+                $item['points'] = json_encode($obj['points']);
+               }
+               $camp =  DB::table('camp_list')->where('id', $camp_id)->first();
+               $obj['camp_id'] = $camp_id;
+               $obj['camp_name'] = $camp->name;
+               $obj['camp_desc'] = $camp->desc;
                $item['content'] = json_encode($obj);  
                $area_insert = DB::table('camp_area')->insert($item);   
             }
         }
         $ret = array();
         $ret['code']= '200';         
+        return Response::json($ret) ;
+    }
+
+    public function getCampMap(Request $request) {
+        $camp_id =$request->get('camp_id');
+        $items =  DB::table('camp_area')->where('camp_id', $camp_id)->get();
+        $ret = array();
+        $data = array();
+        for($i = 0; $i < count($items) ; $i++) {
+            $data[] = json_decode($items[$i]->content);
+        }
+        $ret['data']= $data;         
         return Response::json($ret) ;
     }
 }
