@@ -25,6 +25,14 @@ Route::get('/camplist', 'Backend\CampController@campList');
 Route::get('/campaddname', 'Backend\CampController@campAddName');
 Route::get('/camparealist', 'Backend\CampController@campAreaList');
 
+Route::get('/camppropadd', 'Backend\CampPropController@campPropAdd');
+Route::get('/campproplist', 'Backend\CampPropController@CampPropList');
+Route::post('/addcamppropajax', 'Backend\CampPropController@addCampPropAjax');
+Route::get('/editcamppropajax', 'Backend\CampPropController@editCampPropAjax');
+Route::get('/delcamppropajax', 'Backend\CampPropController@delCampPropAjax');
+Route::get('/getcampproplist', 'Backend\CampPropController@getCampProplist');
+
+
 Route::get('/getcamplist', 'Backend\CampController@getCampList');
 Route::post('/addcampajax', 'Backend\CampController@addCampAjax');
 Route::get('/editcampajax', 'Backend\CampController@editCampAjax');
@@ -34,6 +42,7 @@ Route::get('/campareaadd', 'Backend\CampAreaController@campAreaAdd');
 Route::get('/getcampnamelist', 'Backend\CampAreaController@getCampNameList');
 Route::post('/creatcamparea', 'Backend\CampAreaController@creatCampArea');
 Route::get('/getcampmap', 'Backend\CampAreaController@getCampMap');
+
 
 
 

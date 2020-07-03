@@ -6,6 +6,7 @@ var drawingObject = {};
 drawingObject.type = "";
 drawingObject.background = "";
 drawingObject.border = "";
+var object_type_list = [];
 
 function Point(x, y) {
     this.x = x;
@@ -171,6 +172,7 @@ function chooseObj(obj) {
         fill = rgbToHex(fills[0], fills[1], fills[2]);    
     }
 
+    $("#fill").val(fill);
     $("#fill").spectrum({
         color: fill,
         preferredFormat: "hex"
@@ -365,7 +367,10 @@ function clearForm() {
     cur_object = {};
     var name = $('#name').val();
     if(name == '') name = 0;
-    $('#name').val(parseInt(name)+1); 
+    $('#name').val(parseInt(name)+1);
+    var obj = object_type_list[0];
+    $('#object_type').val(obj.id);
+    changeProperty(obj);
     //$('#form input[type="text"]').val("");
     //$('#form input[type="number"]').val("");
     //$('#form textarea').val("");    
@@ -547,3 +552,69 @@ function createCamp(data) {
     }    
 }
 
+//get camp proprty
+function camp_prop_list() {    
+    var url= '/getcampproplist';
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: {
+            //id : id,
+        },
+        dataType: "json",
+        success: function (res) {          
+           var prop_list = res.data;           
+           var html = '';
+           html += '<option value="0"> Select Type </option>';
+           for(var i = 0; i < res.count; i++) {
+               var obj = prop_list[i];
+               object_type_list[i] = obj; 
+                html += '<option value="'+obj.id+'"> '+obj.object_type+' </option>';
+           }
+           $('#object_type').html(html);
+        }
+    });
+}
+camp_prop_list();
+
+//change event of object type
+$('#object_type').change(function(){
+    var id = $(this).val();
+    for( var i = 0; i < object_type_list.length; i++) {
+        var obj = object_type_list[i];
+        if(obj.id == id) {            
+            changeProperty(obj);
+            break;
+        }       
+    }    
+});
+//change property
+function changeProperty(obj) {       
+    $("#obj_type_name").val(obj.obj_type);
+    $("#obj_type_desc").val(obj.desc);
+    $("#obj_can_flag").val(obj.can_flag);
+    $("#fill").val(obj.color);
+    $("#fill").spectrum({
+        color: obj.color,
+        preferredFormat: "hex"
+    });
+    $('#obj_image_flag').val(obj.image_flag);
+    $('#obj_street_direction_flag').val(obj.street_direction_flag); 
+    if(obj.can_flag == '1' ) {
+        $('.obj_api_link').show();
+    }else {
+        $('.obj_api_link').hide();
+    }
+    if(obj.image_flag == '1') {
+        $('.obj_image').show();
+    }else {
+        $('.obj_image').hide();
+    }
+    if(obj.street_direction_flag == '1') {
+        $('.obj_street').show();
+        $('.obj_direction').show();
+    }else {
+        $('.obj_street').hide();
+        $('.obj_direction').hide();
+    }
+}

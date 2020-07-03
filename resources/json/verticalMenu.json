@@ -39,6 +39,12 @@
             "icon": "feather icon-map",
             "submenu": [
               {
+                "url": "camppropadd",
+                "name": "Camp Property ",
+                "icon": "feather icon-circle",
+                "i18n": "nav.camp_prop"
+              },
+              {
                 "url": "campaddname",
                 "name": "Create camp name ",
                 "icon": "feather icon-circle",

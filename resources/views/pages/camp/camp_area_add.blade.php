@@ -47,7 +47,7 @@
                                   </div>    
                                   <div class="col-6">
                                       <div class="form-group">
-                                          <label for="name">Name</label>
+                                          <label for="name">Camp ID/Name</label>
                                           <div class="controls">
                                             <input type="number" id="name" class="form-control" name="name" placeholder="Name">
                                           </div>
@@ -55,13 +55,43 @@
                                   </div>
                                   <div class="col-6">
                                       <div class="form-group">
-                                          <label for="street">Street</label>
-                                          <div class="controls">
-                                            <input type="text" id="street" class="form-control"  name="street" placeholder="Street">
+                                          <label for="direction">Object Type</label>
+                                          <div class="controls">                                            
+                                            <select class="form-control" id="object_type" name="object_type" >
+                                            </select>  
+                                            <input type="hidden" name="object_type_name" id="object_type_name" />  
+                                            <input type="hidden" name="obj_type_desc" id="obj_type_desc" />
+                                            <input type="hidden" name="obj_can_flag" id="obj_can_flag" />
+                                            <input type="hidden" name="obj_image_flag" id="obj_image_flag" />
+                                            <input type="hidden" name="obj_street_direction_flag" id="obj_street_direction_flag" />
                                           </div>  
                                       </div>
                                   </div>
-                                  <div class="col-6">
+                                  <div class="col-6 obj_api_link">
+                                      <div class="form-group">
+                                          <label for="api_link">Api get for click</label>
+                                          <div class="controls">                                            
+                                            <input type="text" id="api_link" class="form-control"  name="api_link" >
+                                          </div>  
+                                      </div>
+                                  </div>
+                                  <div class="col-6 obj_image">
+                                      <div class="form-group">
+                                          <label for="api_link">Image/Icon</label>
+                                          <div class="controls">                                            
+                                            <input type="text" id="image" class="form-control"  name="image" >
+                                          </div>  
+                                      </div>
+                                  </div>
+                                  <div class="col-6 obj_street">
+                                      <div class="form-group">
+                                          <label for="street">Street</label>
+                                          <div class="controls">
+                                            <input type="text" id="street" class="form-control"  name="street" >
+                                          </div>  
+                                      </div>
+                                  </div>
+                                  <div class="col-6 obj_direction">
                                       <div class="form-group">
                                           <label for="direction">Direction</label>
                                           <div class="controls">
