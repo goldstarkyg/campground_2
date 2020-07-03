@@ -49,17 +49,17 @@
                                       <div class="form-group">
                                           <label for="name">Camp ID/Name</label>
                                           <div class="controls">
-                                            <input type="number" id="name" class="form-control" name="name" placeholder="Name">
+                                            <input type="text" id="name" class="form-control" name="name" placeholder="Name">
                                           </div>
                                       </div>
                                   </div>
                                   <div class="col-6">
                                       <div class="form-group">
-                                          <label for="direction">Object Type</label>
+                                          <label for="object_type">Object Type</label>
                                           <div class="controls">                                            
                                             <select class="form-control" id="object_type" name="object_type" >
                                             </select>  
-                                            <input type="hidden" name="object_type_name" id="object_type_name" />  
+                                            <input type="hidden" name="obj_type_name" id="obj_type_name" />  
                                             <input type="hidden" name="obj_type_desc" id="obj_type_desc" />
                                             <input type="hidden" name="obj_can_flag" id="obj_can_flag" />
                                             <input type="hidden" name="obj_image_flag" id="obj_image_flag" />
@@ -216,7 +216,7 @@
                                 </div>
                                 <!---->
                                 <hr class="my-2" />
-                                <div class="row">                                        
+                                <div class="row mb-5">                                        
                                     <div class="col-6">                                                                                
                                         <div class="form-group">
                                             <select id="camp_name" name="camp_name" class="select2 form-control">
@@ -228,7 +228,10 @@
                                     <div class="col-6">
                                         <button type="button" onClick="CrateCampArea()" class="btn btn-warning pull-right">Add Camp &nbsp;</button>
                                     </div>                                     
-                                </div>                                
+                                </div> 
+                                <div class="row mb-5"> 
+                                    <!--for control height, added -->
+                                </div>                                                                          
                                 <!---->
                             </div>
                         </form>

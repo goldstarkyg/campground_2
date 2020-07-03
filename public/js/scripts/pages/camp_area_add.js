@@ -165,6 +165,22 @@ function chooseObj(obj) {
     $('#height').val(obj.height);
     $('#scaleX').val(obj.scaleX);
     $('#scaleY').val(obj.scaleY);
+    $('#object_type').val(obj.object_type);
+    $('#obj_type_name').val(obj.obj_type_name);
+    $('#obj_type_desc').val(obj.obj_type_desc);
+    $('#obj_can_flag').val(obj.obj_can_flag);
+    $('#obj_image_flag').val(obj.obj_image_flag);
+    $('#obj_street_direction_flag').val(obj.obj_street_direction_flag);
+    $('#api_link').val(obj.api_link);
+
+    for( var i = 0; i < object_type_list.length; i++) {
+        var prop_obj = object_type_list[i];
+        if(obj.object_type == obj.id) {            
+            changeProperty(prop_obj);
+            break;
+        }       
+    }    
+
     var fill = cur_object.fill;
     if(fill.indexOf('#') < 0) {
         fill = fill.substring(fill.indexOf('(')+1, fill.indexOf(')'));
@@ -215,6 +231,7 @@ function createObject() {
     cur_object = canvas.getActiveObject();    
     var type = $('#type').val();
     var name = $('#name').val();
+    name = name.replace(" ","");
     var angle = 0;
     if(name == '') {
         $(".error").html("Name is requried.");
@@ -232,16 +249,16 @@ function createObject() {
     }else{
         angle = cur_object.angle;
     } 
-    var street = $('#street').val();  
-    if(street == '') {
-        $(".error").html("Street is requried.");
-        return false;    
-    }
+    var street = $('#street').val();      
+    // if(street == '') {
+    //     $(".error").html("Street is requried.");
+    //     return false;    
+    // }
     var direction = $('#direction').val();  
-    if(direction == '') {
-        $(".error").html("Direction is requried.");
-        return false;
-    }
+    // if(direction == '') {
+    //     $(".error").html("Direction is requried.");
+    //     return false;
+    // }
     var left = parseInt($('#left').val());
     if(left == '') {
         $(".error").html("Left is requried.");
@@ -286,7 +303,13 @@ function createObject() {
             }
         }
     }
-      
+    var object_type = $('#object_type').val();
+    var obj_type_name = $('#obj_type_name').val();
+    var obj_type_desc = $('#obj_type_desc').val();
+    var obj_can_flag = $('#obj_can_flag').val();
+    var obj_image_flag = $('#obj_image_flag').val();
+    var obj_street_direction_flag = $('#obj_street_direction_flag')
+    var api_link = $('#api_link').val();
     if(cur_object != null) canvas.getActiveObject().remove();
     var item = {};
     item.id = name;      
@@ -304,7 +327,14 @@ function createObject() {
     if(fill_color == '') fill_color = "#78b5f3";
     item.fill = fill_color;
     item.stroke = '#a8a9aa';
-    item.strokeWidth = 0;     
+    item.strokeWidth = 0; 
+    item.object_type = object_type;
+    item.obj_type_name = obj_type_name;
+    item.obj_type_desc = obj_type_desc;
+    item.obj_can_flag = obj_can_flag;
+    item.obj_image_flag = obj_image_flag;
+    item.obj_street_direction_flag = obj_street_direction_flag;
+    item.api_link = api_link;
     //points = [{"x":-6.5,"y":-59.5},{"x":37.5,"y":-87.5},{"x":38.5,"y":-47.5},{"x":78.5,"y":-12.5},{"x":80.5,"y":87.5},{"x":-80.5,"y":64.5},{"x":-60.5,"y":-14.5},{"x":-72.5,"y":-85.5},{"x":-3.5,"y":-58.5},{"x":-3.5,"y":-58.5},{"x":-6.5,"y":-59.5}];
    
     if(type == 'rect') {
@@ -367,7 +397,12 @@ function clearForm() {
     cur_object = {};
     var name = $('#name').val();
     if(name == '') name = 0;
-    $('#name').val(parseInt(name)+1);
+    if(isNaN(name)) {
+        var rand = Math.random().toString(20).substr(2,2);
+        $('#name').val(name+rand);
+    }else {
+        $('#name').val(parseInt(name)+1);
+    }
     var obj = object_type_list[0];
     $('#object_type').val(obj.id);
     changeProperty(obj);
@@ -505,6 +540,13 @@ function createCamp(data) {
         item.strokeWidth = obj.strokeWidth; 
         item.strokeMiterLimit = obj.strokeMiterLimit;   
         item.angle = obj.angle; 
+        item.object_type = obj.object_type;
+        item.obj_type_name = obj.obj_type_name;
+        item.obj_type_desc = obj.obj_type_desc;
+        item.obj_can_flag = obj.obj_can_flag;
+        item.obj_image_flag = obj.obj_image_flag;
+        item.obj_street_direction_flag = obj.obj_street_direction_flag;
+        item.api_link = obj.api_link;
         
         if(obj.type == 'rect') {
             var obj_item = new fabric.Rect(item);
@@ -590,7 +632,7 @@ $('#object_type').change(function(){
 });
 //change property
 function changeProperty(obj) {       
-    $("#obj_type_name").val(obj.obj_type);
+    $("#obj_type_name").val(obj.object_type);
     $("#obj_type_desc").val(obj.desc);
     $("#obj_can_flag").val(obj.can_flag);
     $("#fill").val(obj.color);
@@ -618,3 +660,12 @@ function changeProperty(obj) {
         $('.obj_direction').hide();
     }
 }
+
+//init when start
+function _init(){
+    $('.obj_api_link').hide();
+    $('.obj_image').hide();
+    $('.obj_street').hide();
+    $('.obj_direction').hide();
+}
+_init();
