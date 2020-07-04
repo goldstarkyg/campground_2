@@ -131,8 +131,18 @@ function findLeftPaddingForRoof(roofPoints) {
 var cur_object = {};
 window.onkeydown = function(event) { 
     if(event.keyCode == 46){
-        canvas.getActiveObject().remove();
-    }  
+        //canvas.getActiveObject().remove();        
+        var obj = canvas.getActiveObject();
+        if(obj.type == 'group') {
+            if (!obj || obj.type != 'group') return;      
+            obj.destroy();
+            canvas.remove(obj);
+        }else {
+            canvas.getActiveObject().remove();        
+        }
+        //canvas.renderAll();    
+        clearForm();
+    }          
 };
 //convert rgba to hex
 function componentToHex(c) {
@@ -175,7 +185,7 @@ function chooseObj(obj) {
 
     for( var i = 0; i < object_type_list.length; i++) {
         var prop_obj = object_type_list[i];
-        if(obj.object_type == obj.id) {            
+        if(obj.object_type == prop_obj.id) {            
             changeProperty(prop_obj);
             break;
         }       
@@ -193,20 +203,41 @@ function chooseObj(obj) {
         color: fill,
         preferredFormat: "hex"
     });
-    $('#type').val(obj.type);
-    $('#points_list').hide();
-    if(obj.type == 'polygon' || obj.type== 'polyline') {        
-        var points = obj.points;
-        $('#points_list').html(''); 
-        $('#camp_card').height(camp_height_default);
-        camp_height = camp_height_default;
-        $('#points_list').show();
-        point_order = 0;        
-        for(var i = 0; i <points.length ; i++ ) {
-            var x = points[i].x;
-            var y = points[i].y;
-            addPoints(x,y);
-        }        
+    //get type 
+    var origin_obj_type =   obj.type ;
+    if(origin_obj_type == 'group') {
+        var child_type = obj._objects[0].type;
+        $('#type').val(child_type);
+        $('#points_list').hide();
+        if(child_type == 'polygon' || child_type == 'polyline') {        
+            var points = obj._objects[0].points;
+            $('#points_list').html(''); 
+            $('#camp_card').height(camp_height_default);
+            camp_height = camp_height_default;
+            $('#points_list').show();
+            point_order = 0;        
+            for(var i = 0; i <points.length ; i++ ) {
+                var x = points[i].x;
+                var y = points[i].y;
+                addPoints(x,y);
+            }        
+        }
+    }else {
+        $('#type').val(origin_obj_type);
+        $('#points_list').hide();       
+        if(origin_obj_type == 'polygon' || origin_obj_type == 'polyline') {        
+            var points = obj.points;
+            $('#points_list').html(''); 
+            $('#camp_card').height(camp_height_default);
+            camp_height = camp_height_default;
+            $('#points_list').show();
+            point_order = 0;        
+            for(var i = 0; i <points.length ; i++ ) {
+                var x = points[i].x;
+                var y = points[i].y;
+                addPoints(x,y);
+            }        
+        }
     }
 }  
 
@@ -223,7 +254,7 @@ function onObjectMoving(e) {
 }
 //get json data from canvas
 function getData() {
-    var data = JSON.stringify(canvas.toJSON(['id','name','direction', 'street','width']));
+    var data = JSON.stringify(canvas.toJSON(['id','name','direction', 'street','width', 'object_type', 'obj_type_name','obj_type_desc','obj_can_flag','obj_image_flag', 'obj_street_direction_flag','api_link']));
     $('#canvas_data').text(data);    
 }
 //create object
@@ -237,6 +268,13 @@ function createObject() {
         $(".error").html("Name is requried.");
         return false;
     }
+
+    var object_type = $('#object_type').val();
+    if(object_type == 0 || object_type == null) {
+        $(".error").html("Choose Object type!");
+        return false;
+    }
+
     var re_top = $('#top').val();
     if(cur_object == null) { 
         var name_flag = compareName(name);
@@ -293,14 +331,18 @@ function createObject() {
             if(y == '') y = 0;
             x = parseInt(x);
             y = parseInt(y);                        
-            if( x != 0 && y != 0) {
+            //if( x != 0 && y != 0) {
                 point_obj.x = parseInt(x_list[i]);
                 point_obj.y = parseInt(y_list[i]);
                 points.push(point_obj);
-            }else {
-                $(".error").html("Points is requried.");
-                return false;
-            }
+            // }else {
+            //     $(".error").html("Points is requried.");
+            //     return false;
+            // }
+        }
+        if(points.length < 1) {
+            $(".error").html("Points is requried.");
+            return false;
         }
     }
     var object_type = $('#object_type').val();
@@ -308,16 +350,26 @@ function createObject() {
     var obj_type_desc = $('#obj_type_desc').val();
     var obj_can_flag = $('#obj_can_flag').val();
     var obj_image_flag = $('#obj_image_flag').val();
-    var obj_street_direction_flag = $('#obj_street_direction_flag')
+    var obj_street_direction_flag = $('#obj_street_direction_flag').val();
     var api_link = $('#api_link').val();
-    if(cur_object != null) canvas.getActiveObject().remove();
+    if(cur_object != null) {
+        //canvas.getActiveObject().remove();
+        var obj = canvas.getActiveObject();     
+        if(obj.type == 'group') {         
+            obj.destroy();
+            canvas.remove(obj);
+        }else {
+            canvas.getActiveObject().remove();
+        }
+        //canvas.renderAll();   
+    }
     var item = {};
     item.id = name;      
     item.name = name;
     item.street = street;    
     item.direction = direction;
-    item.left = left ;
-    item.top = top;
+    //item.left = left ;
+    //item.top = top;
     item.width = width;
     item.height = height;
     item.angle = angle;
@@ -328,20 +380,74 @@ function createObject() {
     item.fill = fill_color;
     item.stroke = '#a8a9aa';
     item.strokeWidth = 0; 
-    item.object_type = object_type;
-    item.obj_type_name = obj_type_name;
-    item.obj_type_desc = obj_type_desc;
-    item.obj_can_flag = obj_can_flag;
-    item.obj_image_flag = obj_image_flag;
-    item.obj_street_direction_flag = obj_street_direction_flag;
-    item.api_link = api_link;
+    // item.object_type = object_type;
+    // item.obj_type_name = obj_type_name;
+    // item.obj_type_desc = obj_type_desc;
+    // item.obj_can_flag = obj_can_flag;
+    // item.obj_image_flag = obj_image_flag;
+    // item.obj_street_direction_flag = obj_street_direction_flag;
+    // item.api_link = api_link;
     //points = [{"x":-6.5,"y":-59.5},{"x":37.5,"y":-87.5},{"x":38.5,"y":-47.5},{"x":78.5,"y":-12.5},{"x":80.5,"y":87.5},{"x":-80.5,"y":64.5},{"x":-60.5,"y":-14.5},{"x":-72.5,"y":-85.5},{"x":-3.5,"y":-58.5},{"x":-3.5,"y":-58.5},{"x":-6.5,"y":-59.5}];
    
-    if(type == 'rect') {
-        canvas.add(new fabric.Rect(item));
+    if(type == 'rect') {        
+        //canvas.add(new fabric.Rect(item));
+        var obj_item = new fabric.Rect(item); 
+        var text = new fabric.Text(name, {
+            fontSize: 12,
+            left: parseInt(parseInt(width)/2),
+            top: parseInt(parseInt(height)/2),               
+            originX: 'center',
+            originY: 'center',
+            angle: angle
+          });
+        var group = new fabric.Group([ obj_item, text ], {
+            id: name,
+            name : name,
+            street : street,
+            direction: direction,
+            left: parseInt(left),
+            top: parseInt(top),
+            object_type : object_type,
+            obj_type_name : obj_type_name,
+            obj_type_desc : obj_type_desc,
+            obj_can_flag : obj_can_flag,
+            obj_image_flag : obj_image_flag,
+            obj_street_direction_flag : obj_street_direction_flag,
+            api_link : api_link,
+            fill : fill_color
+        });        
+        canvas.add(group);            
+
     }
     if(type == 'polygon' || type=='polyline') {
-        canvas.add(new fabric.Polyline(points,item)); // Line, Rect, Circle, Ellipse, Polygon, Polyline
+        //canvas.add(new fabric.Polyline(points,item)); // Line, Rect, Circle, Ellipse, Polygon, Polyline
+        var obj_item = new fabric.Polyline(points,item);
+        var text = new fabric.Text(name, {
+            fontSize: 12,
+            left: parseInt(parseInt(width)/2),
+            top: parseInt(parseInt(height)/2),               
+            originX: 'center',
+            originY: 'center',
+            angle: angle
+          }); 
+          var group = new fabric.Group([ obj_item, text ], {
+            id: name,
+            name : name,
+            street : street,
+            direction: direction,
+            left: parseInt(left),
+            top: parseInt(top),
+            object_type : object_type,
+            obj_type_name : obj_type_name,
+            obj_type_desc : obj_type_desc,
+            obj_can_flag : obj_can_flag,
+            obj_image_flag : obj_image_flag,
+            obj_street_direction_flag : obj_street_direction_flag,
+            api_link : api_link,
+            fill : fill_color,
+            type_child: type,
+        });        
+        canvas.add(group);  
     }
     $(".error").html("");
     clearForm();   
@@ -398,7 +504,8 @@ function clearForm() {
     var name = $('#name').val();
     if(name == '') name = 0;
     if(isNaN(name)) {
-        var rand = Math.random().toString(20).substr(2,2);
+        var rand = Math.random().toString(20).substr(2,1);
+        if(name.length > 2) name = name.substr(0, name.length-2);
         $('#name').val(name+rand);
     }else {
         $('#name').val(parseInt(name)+1);
@@ -468,7 +575,7 @@ function compareName(name) {
 
 //create camp area
 function CrateCampArea() {
-    var data = canvas.toJSON(['id','name','direction', 'street','width']);    
+    var data = canvas.toJSON(['id','name','direction', 'street','width','object_type', 'obj_type_name','obj_type_desc','obj_can_flag','obj_image_flag', 'obj_street_direction_flag','api_link']);    
     var camp_id = $('#camp_name').val();    
     if(camp_id > 0) {
         var url= '/creatcamparea';
@@ -511,7 +618,9 @@ $('#camp_name').change(function(){
         dataType: "json",
         success: function (res) {
            var data = res.data;
-           createCamp(data);
+           if(data.length > 0) {
+                createCamp(data);
+           }
         }
     });
 });

@@ -52,8 +52,11 @@ class CampAreaController extends Controller
                $item['width'] = $obj['width'];
                $item['height'] = $obj['height'];
                $item['fill'] = $obj['fill'];
-               if($obj['type'] == 'polygon' || $obj['type'] == 'polyline' ) {
-                $item['points'] = json_encode($obj['points']);
+            //    if($obj['type'] == 'polygon' || $obj['type'] == 'polyline' ) {
+            //     $item['points'] = json_encode($obj['points']);
+            //    }
+               if($obj['objects'][0]['type'] == 'polygon' || $obj['objects'][0]['type'] == 'polyline' ) {
+                    $item['points'] = json_encode($obj['objects'][0]['points']);
                }
                $camp =  DB::table('camp_list')->where('id', $camp_id)->first();
                $obj['camp_id'] = $camp_id;
