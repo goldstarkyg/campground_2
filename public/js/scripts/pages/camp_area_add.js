@@ -182,6 +182,7 @@ function chooseObj(obj) {
     $('#obj_image_flag').val(obj.obj_image_flag);
     $('#obj_street_direction_flag').val(obj.obj_street_direction_flag);
     $('#api_link').val(obj.api_link);
+    $('#angle').val(obj.angle);
 
     for( var i = 0; i < object_type_list.length; i++) {
         var prop_obj = object_type_list[i];
@@ -263,7 +264,7 @@ function createObject() {
     var type = $('#type').val();
     var name = $('#name').val();
     name = name.replace(" ","");
-    var angle = 0;
+    var angle = $('#angle').val();
     if(name == '') {
         $(".error").html("Name is requried.");
         return false;
@@ -375,7 +376,7 @@ function createObject() {
     //item.top = top;
     item.width = width;
     item.height = height;
-    item.angle = angle;
+    //item.angle = angle;
     //item.scaleX = scale_x;
     //item.scaleY = scale_y;
     var fill_color = fill;
@@ -418,7 +419,7 @@ function createObject() {
             obj_street_direction_flag : obj_street_direction_flag,
             api_link : api_link,
             fill : fill_color,
-            //angle:angle,
+            angle:angle,
             scaleX:scale_x,
             scaleY:scale_y
         });        
@@ -452,7 +453,7 @@ function createObject() {
             api_link : api_link,
             fill : fill_color,
             type_child: type,
-            //angle: angle,
+            angle: angle,
             scaleX:scale_x,
             scaleY:scale_y
         });        
@@ -653,13 +654,13 @@ function createCamp(data) {
         //item.top = parseInt(obj.top);
         item.width = parseInt(obj.width);
         item.height = parseInt(obj.height);
-        item.scaleX = obj.scaleX;
-        item.scaleY = obj.scaleY;        
+        //item.scaleX = obj.scaleX;
+        //item.scaleY = obj.scaleY;        
         item.fill = obj.fill;
         item.stroke = obj.stroke;
         item.strokeWidth = obj.strokeWidth; 
         item.strokeMiterLimit = obj.strokeMiterLimit;   
-        item.angle = obj.angle; 
+        //item.angle = obj.angle; 
         // item.object_type = obj.object_type;
         // item.obj_type_name = obj.obj_type_name;
         // item.obj_type_desc = obj.obj_type_desc;
@@ -693,7 +694,10 @@ function createCamp(data) {
                 obj_image_flag : obj.obj_image_flag,
                 obj_street_direction_flag : obj.obj_street_direction_flag,
                 api_link : obj.api_link,
-                fill : obj.fill
+                fill : obj.fill,
+                angle: obj.angle,
+                scaleX: obj.scaleX,
+                scaleY: obj.scaleY
             });           
             canvas.add(group);            
         }
@@ -715,7 +719,7 @@ function createCamp(data) {
                 top: parseInt(parseInt(obj.height)/2),               
                 originX: 'center',
                 originY: 'center',
-                angle: obj.angle
+                //angle: obj.angle
               });
             var group = new fabric.Group([ obj_item, text ], {
                 id: obj.name,
@@ -731,7 +735,10 @@ function createCamp(data) {
                 obj_image_flag : obj.obj_image_flag,
                 obj_street_direction_flag : obj.obj_street_direction_flag,
                 api_link : obj.api_link,
-                fill : obj.fill
+                fill : obj.fill,
+                angle: obj.angle,
+                scaleX: obj.scaleX,
+                scaleY: obj.scaleY
             });          
             canvas.add(group);
         }

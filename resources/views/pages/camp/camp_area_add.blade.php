@@ -158,7 +158,16 @@
                                       <div class="form-group">
                                           <label for="fill">Fill Color</label>
                                           <div>
-                                            <input type="text" id="fill" class="form-control" name="fill" placeholder="Fill">
+                                            <input type="text" id="fill" class="form-control" name="fill" placeholder="Fill">                                            
+                                          </div>
+                                      </div>
+                                  </div>
+
+                                  <div class="col-6">
+                                      <div class="form-group">
+                                          <label for="fill">Angle</label>
+                                          <div>
+                                            <input type="text" id="angle" class="form-control" name="angle" value="0">                                            
                                           </div>
                                       </div>
                                   </div>
