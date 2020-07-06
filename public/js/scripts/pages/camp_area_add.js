@@ -7,7 +7,7 @@ drawingObject.type = "";
 drawingObject.background = "";
 drawingObject.border = "";
 var object_type_list = [];
-
+var mouse_event_name = '';
 function Point(x, y) {
     this.x = x;
     this.y = y;
@@ -253,6 +253,13 @@ function onObjectMoving(e) {
     cur_object = canvas.getActiveObject();
     chooseObj(cur_object);
 }
+
+// canvas.on('object:rotating', function(options) {
+//     cur_object = canvas.getActiveObject();
+//     console.log(options.e.clientX, options.e.clientY);
+//     chooseObj(cur_object);
+// });
+
 //get json data from canvas
 function getData() {
     var data = JSON.stringify(canvas.toJSON(['id','name','direction', 'street','width', 'object_type', 'obj_type_name','obj_type_desc','obj_can_flag','obj_image_flag', 'obj_street_direction_flag','api_link']));
