@@ -8,6 +8,7 @@ drawingObject.background = "";
 drawingObject.border = "";
 var object_type_list = [];
 var mouse_event_name = '';
+var image_path = '';
 function Point(x, y) {
     this.x = x;
     this.y = y;
@@ -399,7 +400,21 @@ function createObject() {
     // item.obj_street_direction_flag = obj_street_direction_flag;
     // item.api_link = api_link;
     //points = [{"x":-6.5,"y":-59.5},{"x":37.5,"y":-87.5},{"x":38.5,"y":-47.5},{"x":78.5,"y":-12.5},{"x":80.5,"y":87.5},{"x":-80.5,"y":64.5},{"x":-60.5,"y":-14.5},{"x":-72.5,"y":-85.5},{"x":-3.5,"y":-58.5},{"x":-3.5,"y":-58.5},{"x":-6.5,"y":-59.5}];
-   
+
+    if(image_path != '' && obj_image_flag == '1' ) {
+        fabric.Image.fromURL(image_path, function (img) {
+            img.set({
+                id : 'image_'+name,
+                width : width / 4,
+                height : height / 4,
+                top: top + height/2,
+                left: left+ width/2
+            });
+            canvas.add(img);        
+            //canvas.add(img).renderAll().setActiveObject(img);
+        }, {crossOrigin: 'anonymous'});
+    }
+     
     if(type == 'rect') {        
         //canvas.add(new fabric.Rect(item));
         var obj_item = new fabric.Rect(item); 
@@ -411,6 +426,7 @@ function createObject() {
             originY: 'center',
             //angle: angle
           });
+
         var group = new fabric.Group([ obj_item, text ], {
             id: name,
             name : name,
@@ -518,6 +534,11 @@ function changeType() {
 //clear form and cur_object
 function clearForm() {
     cur_object = {};
+    
+    image_path = ''; //setting image and icon
+    $('#img-upload').attr('src', '');
+    $('#image_name').val('');
+
     var name = $('#name').val();
     if(name == '') name = 0;
     if(isNaN(name)) {
@@ -828,3 +849,44 @@ function _init(){
     $('.obj_direction').hide();
 }
 _init();
+
+//image management 
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        
+        reader.onload = function (e) {
+            var base64_image = e.target.result;
+            $('#img-upload').attr('src', e.target.result);
+            uploadImage(base64_image);
+        }        
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$("#imgInp").change(function(){
+    readURL(this);
+}); 
+
+function uploadImage(img_data){       
+    var url= '/campimageupload';
+    var old_image = $('#image_name').val();
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: {
+            _token : token,
+            image : img_data,
+            old_image : old_image
+        },
+        dataType: "json",
+        success: function (res) {          
+           var image_name = res.image_name;
+           $('#image_name').val(image_name);
+           image_path = res.image_path;
+        },
+        error: function (res) {                        
+           console.log(res);
+        },
+    });
+}

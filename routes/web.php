@@ -42,6 +42,8 @@ Route::get('/campareaadd', 'Backend\CampAreaController@campAreaAdd');
 Route::get('/getcampnamelist', 'Backend\CampAreaController@getCampNameList');
 Route::post('/creatcamparea', 'Backend\CampAreaController@creatCampArea');
 Route::get('/getcampmap', 'Backend\CampAreaController@getCampMap');
+Route::post('/campimageupload', 'Backend\CampAreaController@campImageUpload');
+
 
 
 

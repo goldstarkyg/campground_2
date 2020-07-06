@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 
 use DB;
 use Response;
+use DateTime;
+use Illuminate\Support\Str;
 
 class CampAreaController extends Controller
 {
@@ -83,5 +85,44 @@ class CampAreaController extends Controller
         }
         $ret['data']= $data;         
         return Response::json($ret) ;
+    }
+
+    public function campImageUpload(Request $request) {
+      
+        $base64_string = $request->get('image','') ;
+        $old_image = $request->get('old_image','');
+       
+        $date = new DateTime();
+        $image_name = $date->getTimestamp();
+        $random = Str::random(2);
+        $image_name = $image_name.$random;
+        $data = explode(',', $base64_string);	
+        $file_types = $data[0];
+        $file_types_list = explode(';', $file_types);
+        $file_types_list_ = explode('/', $file_types_list[0]);
+        $file_type = $file_types_list_[1];
+		$image_name = $image_name.'.'.$file_type;
+        
+
+        $target_dir = public_path()."/uploads/";
+        if(!file_exists($target_dir)) {
+		    mkdir($target_dir, 0777);
+        }
+        if($old_image != '') {	
+            $old_image_path = public_path()."/uploads/".$old_image;
+            if(file_exists($old_image_path)) {
+                unlink($old_image_path);
+            }        
+        }
+		$output_file =  $target_dir . $image_name;
+		$ifp = fopen($output_file, "wb");
+	
+		fwrite($ifp, base64_decode($data[1]));
+        fclose($ifp);
+        
+        $ret = array();        
+        $ret['image_name'] = $image_name;
+        $ret['image_path'] = url('/').'/uploads/'.$image_name;        
+		return Response::json($ret) ;			
     }
 }

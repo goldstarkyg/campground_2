@@ -5,7 +5,7 @@
 @section('vendor-style')      
     <link rel="stylesheet" href="{{URL::to('/')}}/vendors/css/forms/select/select2.min.css">     
 @endsection
-@section('page-style')  
+@section('page-style')      
     <link rel="stylesheet" href="{{URL::to('/')}}/js/scripts/lib/spectrum.css">       
     <style>
         .form-group {
@@ -20,6 +20,39 @@
         }
         .select2-container--default .select2-selection--single .select2-selection__arrow {          
             top: 6px;
+        }
+        .btn-file {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #d0caca;           
+            border-radius: 0px;
+        }       
+        .btn-file-right {
+            position: relative;
+            overflow: hidden;
+            border-right: 1px solid #d0caca;
+            border-top: 1px solid #d0caca;
+            border-bottom: 1px solid #d0caca;
+            border-radius: 0px;
+        }
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
+
+        #img-upload{
+            width: 100%;
         }
     </style>    
 @endsection
@@ -159,16 +192,27 @@
                                           <label for="fill">Fill Color</label>
                                           <div>
                                             <input type="text" id="fill" class="form-control" name="fill" placeholder="Fill">                                            
+                                            <input type="hidden" id="angle" class="form-control" name="angle" value="0"> 
                                           </div>
                                       </div>
                                   </div>
-
-                                  <div class="col-6">
+                                  <div class="col-12">
                                       <div class="form-group">
-                                          <label for="fill">Angle</label>
-                                          <div>
-                                            <input type="text" id="angle" class="form-control" name="angle" value="0">                                            
-                                          </div>
+                                            <label>Upload Image</label>
+                                            <div class="input-group">
+                                                <span class="input-group-prepend" >
+                                                    <span class="btn btn-default btn-file">
+                                                        Browse <input type="file" id="imgInp">
+                                                    </span>
+                                                </span>
+                                                <input type="text" id="image_name" class="form-control" readonly>
+                                                <span class="input-group-append">
+                                                    <span class="btn btn-default btn-file">
+                                                        <img id='img-upload' style="width:20px;"/>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            
                                       </div>
                                   </div>
                                   
