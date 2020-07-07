@@ -194,7 +194,7 @@ function chooseObj(obj) {
     }    
 
     var fill = cur_object.fill;
-    if(fill.indexOf('#') < 0) {
+    if(fill.indexOf('#') < 0 && fill !='' ) {
         fill = fill.substring(fill.indexOf('(')+1, fill.indexOf(')'));
         var fills = fill.split(',');
         fill = rgbToHex(fills[0], fills[1], fills[2]);    
@@ -210,6 +210,17 @@ function chooseObj(obj) {
     if(origin_obj_type == 'group') {
         var child_type = obj._objects[0].type;
         $('#type').val(child_type);
+        if(obj.obj_image_flag == '1' && child_type == 'image' ) {  
+            var src = obj._objects[0].src;          
+            $('.obj_image').show();
+            $('#img-upload').attr('src', src);
+            var link_splits = src.split("/");
+            var image_name = link_splits[link_splits.length-1]; 
+            $('#image_name').val(image_name);
+            $('#imgInp').val('');
+        }else {        
+            $('.obj_image').hide();
+        }    
         $('#points_list').hide();
         if(child_type == 'polygon' || child_type == 'polyline') {        
             var points = obj._objects[0].points;
@@ -291,8 +302,7 @@ function createObject() {
             $(".error").html("Name can not duplicate.");
             return false;
         }        
-        re_top =  parseInt($('#top').val()) + parseInt($('#height').val()) +10 ;
-        
+        re_top =  parseInt($('#top').val()) + parseInt($('#height').val()) +10 ;        
     }else{
         angle = cur_object.angle;
     } 
@@ -401,20 +411,65 @@ function createObject() {
     // item.api_link = api_link;
     //points = [{"x":-6.5,"y":-59.5},{"x":37.5,"y":-87.5},{"x":38.5,"y":-47.5},{"x":78.5,"y":-12.5},{"x":80.5,"y":87.5},{"x":-80.5,"y":64.5},{"x":-60.5,"y":-14.5},{"x":-72.5,"y":-85.5},{"x":-3.5,"y":-58.5},{"x":-3.5,"y":-58.5},{"x":-6.5,"y":-59.5}];
 
-    if(image_path != '' && obj_image_flag == '1' ) {
-        fabric.Image.fromURL(image_path, function (img) {
-            img.set({
-                id : 'image_'+name,
-                width : width / 4,
-                height : height / 4,
-                top: top + height/2,
-                left: left+ width/2
-            });
-            canvas.add(img);        
-            //canvas.add(img).renderAll().setActiveObject(img);
-        }, {crossOrigin: 'anonymous'});
+    if(type == 'image') {     
+        if(image_path != '' && obj_image_flag == '1' ) {
+            fabric.Image.fromURL(image_path, function (img) {
+                img.set({
+                    id : name,
+                    name:name,
+                    street : street,
+                    direction : direction,                   
+                    width : width,
+                    height : height,
+                    fill: '',
+                    stroke : '#a8a9aa',
+                    strokeWidth : 0 , 
+                });
+
+                var text = new fabric.Text(name, {
+                    fontSize: 20,
+                    left: parseInt(parseInt(width)/2),
+                    top: parseInt(parseInt(height)/2),               
+                    originX: 'center',
+                    originY: 'center',
+                    fill : fill                    
+                  });        
+
+                // var text = new fabric.Text('img_'+name, {
+                //     fontFamily: 'Comic Sans'
+                //   });                   	
+                // text.set({
+                //     fill: fill,
+                //     fontSize: 14,
+                //     top : (img.getBoundingRectHeight() / 2) - (text.width / 2),
+                //     left: (img.getBoundingRectWidth() / 2) - (text.height / 2)
+                // }); 
+
+                var group = new fabric.Group([img, text], {
+                    id: name,
+                    name : name,
+                    street : street,
+                    direction: direction,
+                    left: parseInt(left),
+                    top: parseInt(top),
+                    object_type : object_type,
+                    obj_type_name : obj_type_name,
+                    obj_type_desc : obj_type_desc,
+                    obj_can_flag : obj_can_flag,
+                    obj_image_flag : obj_image_flag,
+                    obj_street_direction_flag : obj_street_direction_flag,
+                    api_link : api_link,
+                    fill : fill_color,
+                    angle:angle,
+                    scaleX:scale_x,
+                    scaleY:scale_y                    
+                });  
+                canvas.add(group);    
+                //canvas.add(img);        
+                //canvas.add(img).renderAll().setActiveObject(img);
+            }, {crossOrigin: 'anonymous'});
+        }
     }
-     
     if(type == 'rect') {        
         //canvas.add(new fabric.Rect(item));
         var obj_item = new fabric.Rect(item); 
@@ -483,7 +538,7 @@ function createObject() {
         canvas.add(group);  
     }
     $(".error").html("");
-    clearForm();   
+    //clearForm();   
     //reset top
    
     $('#top').val(re_top)
@@ -528,8 +583,12 @@ function addPoints( x , y){
 //change type
 function changeType() {
     var type = $('#type').val();
+    $('.obj_image').hide(); 
     if(type == 'rect') $('#points_list').hide();
     if(type == 'polygon' || type=="polyline") $('#points_list').show();
+    if(type == 'image' && $('#obj_image_flag').val() == '1' ) {
+        $('.obj_image').show(); 
+    }
 }
 //clear form and cur_object
 function clearForm() {
@@ -538,6 +597,7 @@ function clearForm() {
     image_path = ''; //setting image and icon
     $('#img-upload').attr('src', '');
     $('#image_name').val('');
+    $('#imgInp').val('');
 
     var name = $('#name').val();
     if(name == '') name = 0;
@@ -695,9 +755,58 @@ function createCamp(data) {
         // item.obj_can_flag = obj.obj_can_flag;
         // item.obj_image_flag = obj.obj_image_flag;
         // item.obj_street_direction_flag = obj.obj_street_direction_flag;
-        // item.api_link = obj.api_link;
-        
-        if(obj.objects[0].type == 'group') {
+        // item.api_link = obj.api_link;        
+        if(obj.objects[0].type == 'image') {           
+            image_path = obj.objects[0].src ;
+            fabric.Image.fromURL(image_path, function (img) {
+                img.set({
+                    id : obj.name,
+                    name:obj.name,
+                    street : obj.street,
+                    direction : obj.direction,                   
+                    width : parseInt(obj.width),
+                    height : parseInt(obj.height),
+                    fill: '',
+                    stroke : '#a8a9aa',
+                    strokeWidth : 0 , 
+                    src:image_path
+                });
+
+                var text = new fabric.Text(obj.name, {
+                    fontSize: 20,
+                    left: parseInt(parseInt(obj.width)/2),
+                    top: parseInt(parseInt(obj.height)/2),               
+                    originX: 'center',
+                    originY: 'center',
+                    fill : obj.fill                    
+                  });        
+
+                var group = new fabric.Group([img, text], {
+                    id: obj.name,
+                    name : obj.name,
+                    street : obj.street,
+                    direction: obj.direction,
+                    left: parseInt(obj.left),
+                    top: parseInt(obj.top),
+                    object_type : obj.object_type,
+                    obj_type_name : obj.obj_type_name,
+                    obj_type_desc : obj.obj_type_desc,
+                    obj_can_flag : obj.obj_can_flag,
+                    obj_image_flag : obj.obj_image_flag,
+                    obj_street_direction_flag : obj.obj_street_direction_flag,
+                    api_link : obj.api_link,
+                    fill : obj.fill,
+                    angle: obj.angle,
+                    scaleX: obj.scaleX,
+                    scaleY: obj.scaleY                    
+                });  
+                canvas.add(group);    
+                //canvas.add(img);        
+                //canvas.add(img).renderAll().setActiveObject(img);
+            }, {crossOrigin: 'anonymous'});
+                      
+        }
+        if(obj.objects[0].type == 'rect') {
             var obj_item = new fabric.Rect(item);
             //obj_item.set('selectable', false);
             //canvas.add(obj_item);           
@@ -827,11 +936,11 @@ function changeProperty(obj) {
     }else {
         $('.obj_api_link').hide();
     }
-    if(obj.image_flag == '1') {
+    if(obj.image_flag == '1' && $('#type').val() == 'image' ) {             
         $('.obj_image').show();
-    }else {
+    }else {        
         $('.obj_image').hide();
-    }
+    }    
     if(obj.street_direction_flag == '1') {
         $('.obj_street').show();
         $('.obj_direction').show();

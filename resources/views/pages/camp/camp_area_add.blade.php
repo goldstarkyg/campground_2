@@ -107,15 +107,7 @@
                                             <input type="text" id="api_link" class="form-control"  name="api_link" >
                                           </div>  
                                       </div>
-                                  </div>
-                                  <div class="col-6 obj_image">
-                                      <div class="form-group">
-                                          <label for="api_link">Image/Icon</label>
-                                          <div class="controls">                                            
-                                            <input type="text" id="image" class="form-control"  name="image" >
-                                          </div>  
-                                      </div>
-                                  </div>
+                                  </div>                                  
                                   <div class="col-6 obj_street">
                                       <div class="form-group">
                                           <label for="street">Street</label>
@@ -146,6 +138,7 @@
                                             <option value="rect" selected >Rect</option>
                                             <option value="polygon" >Polygon</option>
                                             <option value="polyline">Polyline</option>
+                                            <option value="image">Image</option>
                                             <!-- <option value="line" >Line</option>
                                             <option value="circle" >Circle</option>
                                             <option value="ellipse" >Ellipse</option> -->
@@ -161,6 +154,27 @@
                                           </div>
                                       </div>
                                   </div>
+                                  
+                                  <div class="col-12 obj_image">
+                                      <div class="form-group">
+                                            <label>Image/Icon</label>
+                                            <div class="input-group">
+                                                <span class="input-group-prepend" >
+                                                    <span class="btn btn-default btn-file">
+                                                        Browse <input type="file" id="imgInp">
+                                                    </span>
+                                                </span>
+                                                <input type="text" id="image_name" class="form-control" readonly>
+                                                <span class="input-group-append">
+                                                    <span class="btn btn-default btn-file">
+                                                        <img id='img-upload' style="position:absolute;left:0px;top:0px;width:100%;"/>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            
+                                      </div>
+                                  </div>
+
                                   <div class="col-6">
                                       <div class="form-group">
                                           <label for="top">Top</label>
@@ -194,25 +208,6 @@
                                             <input type="text" id="fill" class="form-control" name="fill" placeholder="Fill">                                            
                                             <input type="hidden" id="angle" class="form-control" name="angle" value="0"> 
                                           </div>
-                                      </div>
-                                  </div>
-                                  <div class="col-12">
-                                      <div class="form-group">
-                                            <label>Upload Image</label>
-                                            <div class="input-group">
-                                                <span class="input-group-prepend" >
-                                                    <span class="btn btn-default btn-file">
-                                                        Browse <input type="file" id="imgInp">
-                                                    </span>
-                                                </span>
-                                                <input type="text" id="image_name" class="form-control" readonly>
-                                                <span class="input-group-append">
-                                                    <span class="btn btn-default btn-file">
-                                                        <img id='img-upload' style="width:20px;"/>
-                                                    </span>
-                                                </span>
-                                            </div>
-                                            
                                       </div>
                                   </div>
                                   
