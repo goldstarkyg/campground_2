@@ -211,13 +211,15 @@ function chooseObj(obj) {
         var child_type = obj._objects[0].type;
         $('#type').val(child_type);
         if(obj.obj_image_flag == '1' && child_type == 'image' ) {  
-            var src = obj._objects[0].src;          
-            $('.obj_image').show();
-            $('#img-upload').attr('src', src);
-            var link_splits = src.split("/");
-            var image_name = link_splits[link_splits.length-1]; 
-            $('#image_name').val(image_name);
-            $('#imgInp').val('');
+            var src = obj._objects[0].src;
+            if(src != '' && src!= null) {          
+                $('.obj_image').show();
+                $('#img-upload').attr('src', src);
+                var link_splits = src.split("/");
+                var image_name = link_splits[link_splits.length-1]; 
+                $('#image_name').val(image_name);
+                $('#imgInp').val('');
+            }
         }else {        
             $('.obj_image').hide();
         }    
