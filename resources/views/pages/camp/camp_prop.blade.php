@@ -11,10 +11,42 @@
         <link rel="stylesheet" href="{{URL::to('/')}}/js/scripts/lib/spectrum.css">        
         <style>
             .form-group {
-                margin-bottom: 1.4rem !important;
+                margin-bottom: 0.5rem !important;
             }
             .error {
                 color:red;
+            }
+            .btn-file {
+                position: relative;
+                overflow: hidden;
+                border: 1px solid #d0caca;           
+                border-radius: 0px;
+            }       
+            .btn-file-right {
+                position: relative;
+                overflow: hidden;
+                border-right: 1px solid #d0caca;
+                border-top: 1px solid #d0caca;
+                border-bottom: 1px solid #d0caca;
+                border-radius: 0px;
+            }
+            .btn-file input[type=file] {
+                position: absolute;
+                top: 0;
+                right: 0;
+                min-width: 100%;
+                min-height: 100%;
+                font-size: 100px;
+                text-align: right;
+                filter: alpha(opacity=0);
+                opacity: 0;
+                outline: none;
+                background: white;
+                cursor: inherit;
+                display: block;
+            }
+            #img-upload{
+                width: 100%;
             }
         </style>   
 @endsection
@@ -41,6 +73,7 @@
                                           <div class="controls">
                                             <input type="hidden" id="id" name="id" value='0' />  
                                             <input type="text" id="object_type" class="form-control" name="object_type" placeholder="Object type">
+                                            <input type="hidden" id="object_slug" class="form-control" name="object_slug">
                                           </div>
                                       </div>
                                     </div>
@@ -90,6 +123,26 @@
                                           </div>
                                       </div>
                                     </div>
+                                    <div class="col-12 obj_image">
+                                      <div class="form-group">
+                                            <label>Image/Icon</label>
+                                            <div class="input-group">
+                                                <span class="input-group-prepend" >
+                                                    <span class="btn btn-default btn-file">
+                                                        Browse <input type="file" id="imgInp">
+                                                    </span>
+                                                </span>
+                                                <input type="text" id="image_name" class="form-control" readonly>
+                                                <span class="input-group-append">
+                                                    <span class="btn btn-default btn-file">
+                                                        <img id='img-upload' style="position:absolute;left:0px;top:0px;width:100%;"/>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            
+                                      </div>
+                                  </div>
+
                                     <div class="col-12">
                                       <div class="form-group">
                                           <label for="street_direction_flag">Street/Direction</label>

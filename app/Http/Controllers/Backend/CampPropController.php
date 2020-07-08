@@ -22,10 +22,56 @@ class CampPropController extends Controller
         ]);
     }
 
-    public function addCampPropAjax(Request $request) {
-        $camp = $request->except('_token','id');
+    public function addCampPropAjax(Request $request) {        
+        $camp = $request->except('_token','id', 'image');
+        $object_slug = $request->get('object_slug');
+       
+        $base64_string = $request->get('image','') ;
+        $image_path = "";
+        $image_name = "";
+        if($base64_string !='') {                       
+            $data = explode(',', $base64_string);	
+            $file_types = $data[0];
+            $file_types_list = explode(';', $file_types);
+            $file_types_list_ = explode('/', $file_types_list[0]);
+            $file_type = $file_types_list_[1];
+		    $image_name = $object_slug.'.'.$file_type;
+        
+
+            $target_dir = public_path()."/uploads/";
+            if(!file_exists($target_dir)) {
+                mkdir($target_dir, 0777);
+            }
+
+            //same slug delete
+            $old_image_path = public_path()."/uploads/".$image_name;
+            if(file_exists($old_image_path)) {
+                unlink($old_image_path);
+            } 
+
+            //delete in case update
+            $id = $request->get('id');
+            if($id > 0) {
+                $cam = DB::table('camp_prop')->where('id', $id)->first();
+                $old_name = $cam->image_name;
+                $old_path = public_path()."/uploads/".$old_name;
+                if(file_exists($old_path)) {
+                    unlink($old_path);
+                }          
+            }
+       
+            $output_file =  $target_dir . $image_name;
+            $ifp = fopen($output_file, "wb");
+	
+            fwrite($ifp, base64_decode($data[1]));
+            fclose($ifp);
+            $image_path = url('/').'/uploads/'.$image_name;        
+        }
+        $camp['image_path'] = $image_path;
+        $camp['image_name'] = $image_name;
+
         $id = $request->get('id');
-        if($id > 0) {
+        if($id > 0) {            
             $camp_update = DB::table('camp_prop')->where('id', $id)->update($camp);        
         }else {
             if(!empty($camp)) $camp_insert = DB::table('camp_prop')->insert($camp);        
@@ -45,6 +91,14 @@ class CampPropController extends Controller
 
     public function delCampPropAjax(Request $request ) {
         $id = $request->get('id');
+        
+        $camp = DB::table('camp_prop')->where('id', $id)->first();
+        $old_name = $camp->image_name;
+        $old_path = public_path()."/uploads/".$old_name;
+        if(file_exists($old_path)) {
+            unlink($old_path);
+        }     
+
         $camp = DB::table('camp_prop')->where('id', $id)->delete();
         $ret = array();
         $ret['code']= '200';         
