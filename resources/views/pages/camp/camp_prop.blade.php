@@ -10,6 +10,9 @@
 @section('page-style') 
         <link rel="stylesheet" href="{{URL::to('/')}}/js/scripts/lib/spectrum.css">        
         <style>
+            .error {
+                color:red;
+            }
             .form-group {
                 margin-bottom: 0.5rem !important;
             }
@@ -66,7 +69,10 @@
                   <div class="card-body pt-0">
                       <form class="form form-vertical" method="post" id="form" >
                           <div class="form-body">
-                              <div class="row">                                  
+                              <div class="row"> 
+                                  <div class="col-12">
+                                        <label class="error" ></label>
+                                  </div>                                  
                                     <div class="col-12 mt-1">
                                       <div class="form-group">
                                           <label for="object_type">Object Type</label>

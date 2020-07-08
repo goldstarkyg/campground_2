@@ -54,10 +54,12 @@ class CampPropController extends Controller
             if($id > 0) {
                 $cam = DB::table('camp_prop')->where('id', $id)->first();
                 $old_name = $cam->image_name;
-                $old_path = public_path()."/uploads/".$old_name;
-                if(file_exists($old_path)) {
-                    unlink($old_path);
-                }          
+                if(!empty($old_name)) {
+                    $old_path = public_path()."/uploads/".$old_name;
+                    if(file_exists($old_path)) {
+                        unlink($old_path);
+                    }          
+                }
             }
        
             $output_file =  $target_dir . $image_name;
@@ -95,10 +97,11 @@ class CampPropController extends Controller
         $camp = DB::table('camp_prop')->where('id', $id)->first();
         $old_name = $camp->image_name;
         $old_path = public_path()."/uploads/".$old_name;
-        if(file_exists($old_path)) {
-            unlink($old_path);
-        }     
-
+        if(!empty($old_name)) {
+            if(file_exists($old_path)) {
+                unlink($old_path);
+            }     
+        }
         $camp = DB::table('camp_prop')->where('id', $id)->delete();
         $ret = array();
         $ret['code']= '200';         
@@ -114,7 +117,7 @@ class CampPropController extends Controller
                 $color = $camp->color;
                 $color = '<div style="width:30px;height:20px; background-color:'.$color.'">&nbsp;</div>';
                 return $color;
-            })
+            })            
             ->editColumn('can_flag',function($camp) {
                 $can_flag = $camp->can_flag;
                 if($can_flag == '1') $can_flag = 'Yes';
@@ -126,6 +129,9 @@ class CampPropController extends Controller
                 if($image_flag == '1') $image_flag = 'Yes';
                 if($image_flag == '0') $image_flag = 'No';
                 return $image_flag;
+            })
+            ->editColumn('image_path',function($camp) {
+                $image_path = $camp->image_path;
             })
             ->editColumn('street_direction_flag',function($camp) {
                 $street_direction_flag = $camp->street_direction_flag;
