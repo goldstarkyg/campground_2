@@ -96,6 +96,7 @@
                                             <input type="hidden" name="obj_type_desc" id="obj_type_desc" />
                                             <input type="hidden" name="obj_can_flag" id="obj_can_flag" />
                                             <input type="hidden" name="obj_image_flag" id="obj_image_flag" />
+                                            <input type="hidden" name="obj_image_path" id="obj_image_path" />
                                             <input type="hidden" name="obj_street_direction_flag" id="obj_street_direction_flag" />
                                           </div>  
                                       </div>
@@ -137,8 +138,7 @@
                                           <select id="type" class="form-control" onChange="changeType()">
                                             <option value="rect" selected >Rect</option>
                                             <option value="polygon" >Polygon</option>
-                                            <option value="polyline">Polyline</option>
-                                            <option value="image">Image</option>
+                                            <option value="polyline">Polyline</option>                                           
                                             <!-- <option value="line" >Line</option>
                                             <option value="circle" >Circle</option>
                                             <option value="ellipse" >Ellipse</option> -->
@@ -252,13 +252,13 @@
                                                     <button type="button" onClick="createObject()"  class="btn btn-warning pull-right"  title="Create/Update">Add/Update</button>                                              
                                                 </div>
                                             </div>
-                                            <!--
+                                            
                                             <div class="col-6">
                                                 <div class="form-group">                                  
                                                     <button type="button" id="getdata" onClick="getData()" class="btn btn-warning pull-right" title="Get Data">Get Data</button>
                                                 </div>
                                             </div>
-                                            -->
+                                            
                                         </div>    
                                     </div>                                    
                                 </div>

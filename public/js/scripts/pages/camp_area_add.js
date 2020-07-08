@@ -181,6 +181,7 @@ function chooseObj(obj) {
     $('#obj_type_desc').val(obj.obj_type_desc);
     $('#obj_can_flag').val(obj.obj_can_flag);
     $('#obj_image_flag').val(obj.obj_image_flag);
+    $('#obj_image_path').val(obj.obj_image_path);
     $('#obj_street_direction_flag').val(obj.obj_street_direction_flag);
     $('#api_link').val(obj.api_link);
     $('#angle').val(obj.angle);
@@ -268,12 +269,6 @@ function onObjectMoving(e) {
     chooseObj(cur_object);
 }
 
-// canvas.on('object:rotating', function(options) {
-//     cur_object = canvas.getActiveObject();
-//     console.log(options.e.clientX, options.e.clientY);
-//     chooseObj(cur_object);
-// });
-
 //get json data from canvas
 function getData() {
     var data = JSON.stringify(canvas.toJSON(['id','name','direction', 'street','width', 'object_type', 'obj_type_name','obj_type_desc','obj_can_flag','obj_image_flag', 'obj_street_direction_flag','api_link']));
@@ -308,16 +303,8 @@ function createObject() {
     }else{
         angle = cur_object.angle;
     } 
-    var street = $('#street').val();      
-    // if(street == '') {
-    //     $(".error").html("Street is requried.");
-    //     return false;    
-    // }
-    var direction = $('#direction').val();  
-    // if(direction == '') {
-    //     $(".error").html("Direction is requried.");
-    //     return false;
-    // }
+    var street = $('#street').val();         
+    var direction = $('#direction').val();      
     var left = parseInt($('#left').val());
     if(left == '') {
         $(".error").html("Left is requried.");
@@ -371,6 +358,7 @@ function createObject() {
     var obj_type_desc = $('#obj_type_desc').val();
     var obj_can_flag = $('#obj_can_flag').val();
     var obj_image_flag = $('#obj_image_flag').val();
+    var obj_image_path= $('#obj_image_path').val();
     var obj_street_direction_flag = $('#obj_street_direction_flag').val();
     var api_link = $('#api_link').val();
     var scale_x = $('#scaleX').val();
@@ -391,28 +379,16 @@ function createObject() {
     item.id = name;      
     item.name = name;
     item.street = street;    
-    item.direction = direction;
-    //item.left = left ;
-    //item.top = top;
+    item.direction = direction;   
     item.width = width;
-    item.height = height;
-    //item.angle = angle;
-    //item.scaleX = scale_x;
-    //item.scaleY = scale_y;
+    item.height = height;    
     var fill_color = fill;
     if(fill_color == '') fill_color = "#78b5f3";
     item.fill = fill_color;
     item.stroke = '#a8a9aa';
     item.strokeWidth = 0; 
-    // item.object_type = object_type;
-    // item.obj_type_name = obj_type_name;
-    // item.obj_type_desc = obj_type_desc;
-    // item.obj_can_flag = obj_can_flag;
-    // item.obj_image_flag = obj_image_flag;
-    // item.obj_street_direction_flag = obj_street_direction_flag;
-    // item.api_link = api_link;
-    //points = [{"x":-6.5,"y":-59.5},{"x":37.5,"y":-87.5},{"x":38.5,"y":-47.5},{"x":78.5,"y":-12.5},{"x":80.5,"y":87.5},{"x":-80.5,"y":64.5},{"x":-60.5,"y":-14.5},{"x":-72.5,"y":-85.5},{"x":-3.5,"y":-58.5},{"x":-3.5,"y":-58.5},{"x":-6.5,"y":-59.5}];
-
+    
+    /*
     if(type == 'image') {     
         if(image_path != '' && obj_image_flag == '1' ) {
             fabric.Image.fromURL(image_path, function (img) {
@@ -435,17 +411,9 @@ function createObject() {
                     originX: 'center',
                     originY: 'center',
                     fill : fill                    
-                  });        
+                  });       
 
-                // var text = new fabric.Text('img_'+name, {
-                //     fontFamily: 'Comic Sans'
-                //   });                   	
-                // text.set({
-                //     fill: fill,
-                //     fontSize: 14,
-                //     top : (img.getBoundingRectHeight() / 2) - (text.width / 2),
-                //     left: (img.getBoundingRectWidth() / 2) - (text.height / 2)
-                // }); 
+                
 
                 var group = new fabric.Group([img, text], {
                     id: name,
@@ -466,12 +434,11 @@ function createObject() {
                     scaleX:scale_x,
                     scaleY:scale_y                    
                 });  
-                canvas.add(group);    
-                //canvas.add(img);        
-                //canvas.add(img).renderAll().setActiveObject(img);
+                canvas.add(group);                    
             }, {crossOrigin: 'anonymous'});
         }
     }
+    */
     if(type == 'rect') {        
         //canvas.add(new fabric.Rect(item));
         var obj_item = new fabric.Rect(item); 
@@ -496,6 +463,7 @@ function createObject() {
             obj_type_desc : obj_type_desc,
             obj_can_flag : obj_can_flag,
             obj_image_flag : obj_image_flag,
+            obj_image_path : obj_image_path,
             obj_street_direction_flag : obj_street_direction_flag,
             api_link : api_link,
             fill : fill_color,
@@ -503,8 +471,39 @@ function createObject() {
             scaleX:scale_x,
             scaleY:scale_y
         });        
-        canvas.add(group);            
-
+        canvas.add(group);   
+        
+        //add iamge/icon
+        if(obj_image_flag == '1') {
+            fabric.Image.fromURL(obj_image_path, function (img) {
+                img.set({
+                    id : "img_"+name,
+                    name:"img_"+name,
+                    street : street,
+                    direction : direction,                   
+                    width : parseInt(width)/4,
+                    height : parseInt(height)/4,
+                    left: parseInt(left),
+                    top: parseInt(top),
+                    object_type : object_type,
+                    obj_type_name : obj_type_name,
+                    obj_type_desc : obj_type_desc,
+                    obj_can_flag : obj_can_flag,
+                    obj_image_flag : obj_image_flag,
+                    obj_image_path : obj_image_path,
+                    obj_street_direction_flag : obj_street_direction_flag,
+                    api_link : api_link,
+                    angle:angle,
+                    scaleX:scale_x,
+                    scaleY:scale_y,
+                    fill: '',
+                    stroke : '#a8a9aa',
+                    strokeWidth : 0 , 
+                });
+                canvas.add(img);                    
+            }, {crossOrigin: 'anonymous'});
+        }
+        //end image/icon
     }
     if(type == 'polygon' || type=='polyline') {
         //canvas.add(new fabric.Polyline(points,item)); // Line, Rect, Circle, Ellipse, Polygon, Polyline
@@ -538,6 +537,38 @@ function createObject() {
             scaleY:scale_y
         });        
         canvas.add(group);  
+
+        //add iamge/icon
+        if(obj_image_flag == '1') {
+            fabric.Image.fromURL(obj_image_path, function (img) {
+                img.set({
+                    id : "img_"+name,
+                    name:"img_"+name,
+                    street : street,
+                    direction : direction,                   
+                    width : parseInt(width)/4,
+                    height : parseInt(height)/4,
+                    left: parseInt(left),
+                    top: parseInt(top),
+                    object_type : object_type,
+                    obj_type_name : obj_type_name,
+                    obj_type_desc : obj_type_desc,
+                    obj_can_flag : obj_can_flag,
+                    obj_image_flag : obj_image_flag,
+                    obj_image_path : obj_image_path,
+                    obj_street_direction_flag : obj_street_direction_flag,
+                    api_link : api_link,
+                    angle:angle,
+                    scaleX:scale_x,
+                    scaleY:scale_y,
+                    fill: '',
+                    stroke : '#a8a9aa',
+                    strokeWidth : 0 , 
+                });
+                canvas.add(img);                    
+            }, {crossOrigin: 'anonymous'});
+        }
+        //end image/icon
     }
     $(".error").html("");
     //clearForm();   
@@ -675,7 +706,7 @@ function compareName(name) {
 
 //create camp area
 function CrateCampArea() {
-    var data = canvas.toJSON(['id','name','direction', 'street','width','object_type', 'obj_type_name','obj_type_desc','obj_can_flag','obj_image_flag', 'obj_street_direction_flag','api_link']);    
+    var data = canvas.toJSON(['id','name','direction', 'street','width','object_type', 'obj_type_name','obj_type_desc','obj_can_flag','obj_image_flag', 'obj_image_path','obj_street_direction_flag','api_link']);    
     var camp_id = $('#camp_name').val();    
     if(camp_id > 0) {
         var url= '/creatcamparea';
@@ -733,57 +764,78 @@ function createCamp(data) {
     for(var i = 0; i < data.length ; i++) {       
         var obj = data[i];
         var item = {};
-        item.id = obj.name;
-        // item.camp_id = obj.camp_id;
-        // item.camp_name = obj.camp_name;
-        // item.camp_desc = obj.camp_desc;      
+        item.id = obj.name;        
         item.name = obj.name;
         item.street = obj.street;    
-        item.direction = obj.direction;
-        //item.left = parseInt(obj.left) ;
-        //item.top = parseInt(obj.top);
+        item.direction = obj.direction;        
         item.width = parseInt(obj.width);
-        item.height = parseInt(obj.height);
-        //item.scaleX = obj.scaleX;
-        //item.scaleY = obj.scaleY;        
+        item.height = parseInt(obj.height);        
         item.fill = obj.fill;
         item.stroke = obj.stroke;
         item.strokeWidth = obj.strokeWidth; 
-        item.strokeMiterLimit = obj.strokeMiterLimit;   
-        //item.angle = obj.angle; 
-        // item.object_type = obj.object_type;
-        // item.obj_type_name = obj.obj_type_name;
-        // item.obj_type_desc = obj.obj_type_desc;
-        // item.obj_can_flag = obj.obj_can_flag;
-        // item.obj_image_flag = obj.obj_image_flag;
-        // item.obj_street_direction_flag = obj.obj_street_direction_flag;
-        // item.api_link = obj.api_link;        
-        if(obj.objects[0].type == 'image') {           
-            image_path = obj.objects[0].src ;
-            fabric.Image.fromURL(image_path, function (img) {
-                img.set({
-                    id : obj.name,
-                    name:obj.name,
-                    street : obj.street,
-                    direction : obj.direction,                   
-                    width : parseInt(obj.width),
-                    height : parseInt(obj.height),
-                    fill: '',
-                    stroke : '#a8a9aa',
-                    strokeWidth : 0 , 
-                    src:image_path
-                });
+        item.strokeMiterLimit = obj.strokeMiterLimit;           
+        if(obj.type == 'group') {    
+            /*
+            if(obj.objects[0].type == 'image') {           
+                image_path = obj.objects[0].src ;
+                fabric.Image.fromURL(image_path, function (img) {
+                    img.set({
+                        id : obj.name,
+                        name:obj.name,
+                        street : obj.street,
+                        direction : obj.direction,                   
+                        width : parseInt(obj.width),
+                        height : parseInt(obj.height),
+                        fill: '',
+                        stroke : '#a8a9aa',
+                        strokeWidth : 0 , 
+                        src:image_path
+                    });
 
+                    var text = new fabric.Text(obj.name, {
+                        fontSize: 20,
+                        left: parseInt(parseInt(obj.width)/2),
+                        top: parseInt(parseInt(obj.height)/2),               
+                        originX: 'center',
+                        originY: 'center',
+                        fill : obj.fill                    
+                    });        
+
+                    var group = new fabric.Group([img, text], {
+                        id: obj.name,
+                        name : obj.name,
+                        street : obj.street,
+                        direction: obj.direction,
+                        left: parseInt(obj.left),
+                        top: parseInt(obj.top),
+                        object_type : obj.object_type,
+                        obj_type_name : obj.obj_type_name,
+                        obj_type_desc : obj.obj_type_desc,
+                        obj_can_flag : obj.obj_can_flag,
+                        obj_image_flag : obj.obj_image_flag,
+                        obj_street_direction_flag : obj.obj_street_direction_flag,
+                        api_link : obj.api_link,
+                        fill : obj.fill,
+                        angle: obj.angle,
+                        scaleX: obj.scaleX,
+                        scaleY: obj.scaleY                    
+                    });  
+                    canvas.add(group);                   
+                }, {crossOrigin: 'anonymous'});
+            }
+            */
+            if(obj.objects[0].type == 'rect') {
+                var obj_item = new fabric.Rect(item);
+                //obj_item.set('selectable', false);
+                //canvas.add(obj_item);           
                 var text = new fabric.Text(obj.name, {
-                    fontSize: 20,
+                    fontSize: 12,
                     left: parseInt(parseInt(obj.width)/2),
                     top: parseInt(parseInt(obj.height)/2),               
                     originX: 'center',
-                    originY: 'center',
-                    fill : obj.fill                    
-                  });        
-
-                var group = new fabric.Group([img, text], {
+                    originY: 'center'
+                });
+                var group = new fabric.Group([ obj_item, text ], {
                     id: obj.name,
                     name : obj.name,
                     street : obj.street,
@@ -800,88 +852,85 @@ function createCamp(data) {
                     fill : obj.fill,
                     angle: obj.angle,
                     scaleX: obj.scaleX,
-                    scaleY: obj.scaleY                    
-                });  
-                canvas.add(group);    
-                //canvas.add(img);        
-                //canvas.add(img).renderAll().setActiveObject(img);
-            }, {crossOrigin: 'anonymous'});
-                      
+                    scaleY: obj.scaleY
+                });           
+                canvas.add(group);            
+            }
+            if(obj.objects[0].type == 'polygon' || obj.objects[0].type=='polyline') {
+                var points = [];
+                var point_list = obj.objects[0].points;
+                for(var m = 0; m < point_list.length; m++) {
+                    var ob = {};
+                    ob.x = parseInt(point_list[m].x);
+                    ob.y = parseInt(point_list[m].y);
+                    points[m] = ob;
+                }      
+                var obj_item = new fabric.Polyline(points,item);      
+                //obj_item.set('selectable', false);
+                //canvas.add(obj_item);; // Line, Rect, Circle, Ellipse, Polygon, Polyline , Triangle(3 angle)
+                var text = new fabric.Text(obj.name, {
+                    fontSize: 12,
+                    left: parseInt(parseInt(obj.width)/2),
+                    top: parseInt(parseInt(obj.height)/2),               
+                    originX: 'center',
+                    originY: 'center',
+                    //angle: obj.angle
+                });
+                var group = new fabric.Group([ obj_item, text ], {
+                    id: obj.name,
+                    name : obj.name,
+                    street : obj.street,
+                    direction: obj.direction,
+                    left: parseInt(obj.left),
+                    top: parseInt(obj.top),
+                    object_type : obj.object_type,
+                    obj_type_name : obj.obj_type_name,
+                    obj_type_desc : obj.obj_type_desc,
+                    obj_can_flag : obj.obj_can_flag,
+                    obj_image_flag : obj.obj_image_flag,
+                    obj_street_direction_flag : obj.obj_street_direction_flag,
+                    api_link : obj.api_link,
+                    fill : obj.fill,
+                    angle: obj.angle,
+                    scaleX: obj.scaleX,
+                    scaleY: obj.scaleY
+                });          
+                canvas.add(group);
+            }
         }
-        if(obj.objects[0].type == 'rect') {
-            var obj_item = new fabric.Rect(item);
-            //obj_item.set('selectable', false);
-            //canvas.add(obj_item);           
-            var text = new fabric.Text(obj.name, {
-                fontSize: 12,
-                left: parseInt(parseInt(obj.width)/2),
-                top: parseInt(parseInt(obj.height)/2),               
-                originX: 'center',
-                originY: 'center'
-              });
-            var group = new fabric.Group([ obj_item, text ], {
-                id: obj.name,
-                name : obj.name,
-                street : obj.street,
-                direction: obj.direction,
-                left: parseInt(obj.left),
-                top: parseInt(obj.top),
-                object_type : obj.object_type,
-                obj_type_name : obj.obj_type_name,
-                obj_type_desc : obj.obj_type_desc,
-                obj_can_flag : obj.obj_can_flag,
-                obj_image_flag : obj.obj_image_flag,
-                obj_street_direction_flag : obj.obj_street_direction_flag,
-                api_link : obj.api_link,
-                fill : obj.fill,
-                angle: obj.angle,
-                scaleX: obj.scaleX,
-                scaleY: obj.scaleY
-            });           
-            canvas.add(group);            
+
+        if(obj.type == 'image') {
+            if(obj.obj_image_flag == "1") {
+                fabric.Image.fromURL(obj.obj_image_path, function (img) {
+                    img.set({
+                        id : obj.name,
+                        name: obj.name,
+                        street : obj.street,
+                        direction : obj.direction,                   
+                        width : parseInt(obj.width),
+                        height : parseInt(obj.height),
+                        left: parseInt(obj.left),
+                        top: parseInt(obj.top),
+                        object_type : obj.object_type,
+                        obj_type_name : obj.obj_type_name,
+                        obj_type_desc : obj.obj_type_desc,
+                        obj_can_flag : obj.obj_can_flag,
+                        obj_image_flag : obj.obj_image_flag,
+                        obj_image_path : obj.obj_image_path,
+                        obj_street_direction_flag : obj.obj_street_direction_flag,
+                        api_link : obj.api_link,
+                        angle: obj.angle,
+                        scaleX: obj.scaleX,
+                        scaleY: obj.scaleY,
+                        fill: '',
+                        stroke : '#a8a9aa',
+                        strokeWidth : 0 , 
+                    });
+                    canvas.add(img);                    
+                }, {crossOrigin: 'anonymous'});
+            }
         }
-        if(obj.objects[0].type == 'polygon' || obj.objects[0].type=='polyline') {
-            var points = [];
-            var point_list = obj.objects[0].points;
-            for(var m = 0; m < point_list.length; m++) {
-                var ob = {};
-                ob.x = parseInt(point_list[m].x);
-                ob.y = parseInt(point_list[m].y);
-                points[m] = ob;
-            }      
-            var obj_item = new fabric.Polyline(points,item);      
-            //obj_item.set('selectable', false);
-            //canvas.add(obj_item);; // Line, Rect, Circle, Ellipse, Polygon, Polyline , Triangle(3 angle)
-            var text = new fabric.Text(obj.name, {
-                fontSize: 12,
-                left: parseInt(parseInt(obj.width)/2),
-                top: parseInt(parseInt(obj.height)/2),               
-                originX: 'center',
-                originY: 'center',
-                //angle: obj.angle
-              });
-            var group = new fabric.Group([ obj_item, text ], {
-                id: obj.name,
-                name : obj.name,
-                street : obj.street,
-                direction: obj.direction,
-                left: parseInt(obj.left),
-                top: parseInt(obj.top),
-                object_type : obj.object_type,
-                obj_type_name : obj.obj_type_name,
-                obj_type_desc : obj.obj_type_desc,
-                obj_can_flag : obj.obj_can_flag,
-                obj_image_flag : obj.obj_image_flag,
-                obj_street_direction_flag : obj.obj_street_direction_flag,
-                api_link : obj.api_link,
-                fill : obj.fill,
-                angle: obj.angle,
-                scaleX: obj.scaleX,
-                scaleY: obj.scaleY
-            });          
-            canvas.add(group);
-        }
-       
+
     }    
 }
 
@@ -932,16 +981,12 @@ function changeProperty(obj) {
         preferredFormat: "hex"
     });
     $('#obj_image_flag').val(obj.image_flag);
+    $('#obj_image_path').val(obj.image_path);
     $('#obj_street_direction_flag').val(obj.street_direction_flag); 
     if(obj.can_flag == '1' ) {
         $('.obj_api_link').show();
     }else {
         $('.obj_api_link').hide();
-    }
-    if(obj.image_flag == '1' && $('#type').val() == 'image' ) {             
-        $('.obj_image').show();
-    }else {        
-        $('.obj_image').hide();
     }    
     if(obj.street_direction_flag == '1') {
         $('.obj_street').show();
