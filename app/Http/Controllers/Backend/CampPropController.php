@@ -110,7 +110,7 @@ class CampPropController extends Controller
 
     public function campPropList() {
         $camp_prop_list = DB::table('camp_prop')                        
-                        ->select(['id', 'object_type', 'desc', 'color', 'can_flag','api_link' ,'image_flag', 'street_direction_flag'])
+                        ->select(['id', 'object_type', 'desc', 'color', 'can_flag','api_link' ,'image_flag', 'image_path', 'street_direction_flag'])
                         ->get();
         return DataTables::of($camp_prop_list)    
             ->editColumn('color',function($camp) {
@@ -131,7 +131,13 @@ class CampPropController extends Controller
                 return $image_flag;
             })
             ->editColumn('image_path',function($camp) {
-                $image_path = $camp->image_path;
+                $image_path = '';
+                if($camp->image_path != '' || !empty($camp->image_path))
+                    $image_path = '<image src="'.$camp->image_path.'" style="width:30px" />';
+                else 
+                   $image_path = '';
+
+                return $image_path;
             })
             ->editColumn('street_direction_flag',function($camp) {
                 $street_direction_flag = $camp->street_direction_flag;
@@ -145,7 +151,7 @@ class CampPropController extends Controller
                 
                 return $actions;
             })
-            ->rawColumns(['color','actions'])
+            ->rawColumns(['color','image_path','actions'])
             ->make(true);
     }
 

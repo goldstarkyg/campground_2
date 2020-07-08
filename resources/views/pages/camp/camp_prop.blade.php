@@ -199,12 +199,13 @@
                                                 <table id="camp_prop_list" class="table table-striped table-bordered table-hover display scroll-horizontal-vertical">
                                                     <thead>
                                                         <tr>                                                           
-                                                            <th>Object Type</th>
+                                                            <th>Object Type</th>                                                            
                                                             <th>Description</th>
                                                             <th>Color</th>
                                                             <th>Can Click</th>
                                                             <th>Api Link</th>
                                                             <th>Image/Icon</th>
+                                                            <th>Image</th>
                                                             <th>Street/Direction</th>
                                                             <th>Actions</th>
                                                         </tr>
@@ -217,6 +218,7 @@
                                                             <th>Can Click</th>
                                                             <th>Api Link</th>
                                                             <th>Image/Icon</th>
+                                                            <th>Image</th>
                                                             <th>Street/Direction</th>
                                                             <th>Actions</th>
                                                     </tr>
