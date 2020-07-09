@@ -404,7 +404,7 @@ function createObject() {
                 });
 
                 var text = new fabric.Text(name, {
-                    fontSize: 16,
+                    fontSize: 14,
                     left: parseInt(parseInt(width)/2),
                     top: parseInt(parseInt(height)/2),               
                     originX: 'center',
@@ -442,7 +442,7 @@ function createObject() {
         //canvas.add(new fabric.Rect(item));
         var obj_item = new fabric.Rect(item); 
         var text = new fabric.Text(name, {
-            fontSize: 16,
+            fontSize: 14,
             left: parseInt(parseInt(width)/2),
             top: parseInt(parseInt(height)/3),               
             originX: 'center',
@@ -514,7 +514,7 @@ function createObject() {
         //canvas.add(new fabric.Polyline(points,item)); // Line, Rect, Circle, Ellipse, Polygon, Polyline
         var obj_item = new fabric.Polyline(points,item);
         var text = new fabric.Text(name, {
-            fontSize: 16,
+            fontSize: 14,
             left: parseInt(parseInt(width)/2),
             top: parseInt(parseInt(height)/3),               
             originX: 'center',
@@ -788,7 +788,7 @@ function createCamp(data) {
                 //obj_item.set('selectable', false);
                 //canvas.add(obj_item);           
                 var text = new fabric.Text(obj.name, {
-                    fontSize: 16,
+                    fontSize: 14,
                     left: parseInt(parseInt(obj.width)/2),
                     top: parseInt(parseInt(obj.height)/3),               
                     originX: 'center',
@@ -875,7 +875,7 @@ function createCamp(data) {
                 //obj_item.set('selectable', false);
                 //canvas.add(obj_item);; // Line, Rect, Circle, Ellipse, Polygon, Polyline , Triangle(3 angle)
                 var text = new fabric.Text(obj.name, {
-                    fontSize: 16,
+                    fontSize: 14,
                     left: parseInt(parseInt(obj.width)/2),
                     top: parseInt(parseInt(obj.height)/3),               
                     originX: 'center',
