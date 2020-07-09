@@ -67,27 +67,7 @@ class CampAreaController extends Controller
                     $obj['camp_desc'] = $camp->desc;
                     $item['content'] = json_encode($obj);  
                     $area_insert = DB::table('camp_area')->insert($item);   
-                }
-                if($obj['type'] == 'image') { 
-                    $item = array();
-                    $item['camp_id'] = $camp_id;             
-                    $item['type'] = $obj['type'];
-                    $item['name'] = $obj['name'];
-                    $item['street'] = $obj['street'];
-                    $item['direction'] = $obj['direction'];
-                    $item['left'] = $obj['left'];
-                    $item['top'] = $obj['top'];
-                    $item['width'] = $obj['width'];
-                    $item['height'] = $obj['height'];
-                    $item['fill'] = $obj['fill'];
-                    
-                    $camp =  DB::table('camp_list')->where('id', $camp_id)->first();
-                    $obj['camp_id'] = $camp_id;
-                    $obj['camp_name'] = $camp->name;
-                    $obj['camp_desc'] = $camp->desc;
-                    $item['content'] = json_encode($obj);  
-                    $area_insert = DB::table('camp_area')->insert($item);   
-                }
+                }               
             }
         }
         $ret = array();
