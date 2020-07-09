@@ -1036,11 +1036,11 @@ function changeProperty(obj) {
     $('#obj_image_flag').val(obj.image_flag);
     $('#obj_image_path').val(obj.image_path);
     $('#obj_street_direction_flag').val(obj.street_direction_flag); 
-    if(obj.can_flag == '1' ) {
-        $('.obj_api_link').show();
-    }else {
-        $('.obj_api_link').hide();
-    }    
+    // if(obj.can_flag == '1' ) {
+    //     $('.obj_api_link').show();
+    // }else {
+    //     $('.obj_api_link').hide();
+    // }    
     if(obj.street_direction_flag == '1') {
         $('.obj_street').show();
         $('.obj_direction').show();
