@@ -471,18 +471,24 @@ function createObject() {
             scaleX:scale_x,
             scaleY:scale_y
         });        
-        canvas.add(group);   
+        //canvas.add(group);   
         
         //add iamge/icon
         if(obj_image_flag == '1') {
             fabric.Image.fromURL(obj_image_path, function (img) {
-                img.set({
-                    id : "img_"+name,
-                    name:"img_"+name,
+                img.set({                                 
+                    width : 40,
+                    height : 20,                  
+                    left: 0,
+                    top: 14,               
+                    originX: 'center',
+                    originY: 'center',                   
+                });
+                var group = new fabric.Group([ obj_item, img, text ], {
+                    id: name,
+                    name : name,
                     street : street,
-                    direction : direction,                   
-                    width : parseInt(width)/4,
-                    height : parseInt(height)/4,
+                    direction: direction,
                     left: parseInt(left),
                     top: parseInt(top),
                     object_type : object_type,
@@ -493,14 +499,13 @@ function createObject() {
                     obj_image_path : obj_image_path,
                     obj_street_direction_flag : obj_street_direction_flag,
                     api_link : api_link,
+                    fill : fill_color,
                     angle:angle,
                     scaleX:scale_x,
-                    scaleY:scale_y,
-                    fill: '',
-                    stroke : '#a8a9aa',
-                    strokeWidth : 0 , 
-                });
-                canvas.add(img);                    
+                    scaleY:scale_y
+                });        
+                canvas.add(group);  
+                //canvas.add(img);                    
             }, {crossOrigin: 'anonymous'});
         }
         //end image/icon
@@ -536,18 +541,24 @@ function createObject() {
             scaleX:scale_x,
             scaleY:scale_y
         });        
-        canvas.add(group);  
+        //canvas.add(group);  
 
         //add iamge/icon
         if(obj_image_flag == '1') {
             fabric.Image.fromURL(obj_image_path, function (img) {
                 img.set({
-                    id : "img_"+name,
-                    name:"img_"+name,
+                    width : 40,
+                    height : 20,                  
+                    left: 0,
+                    top: 14,               
+                    originX: 'center',
+                    originY: 'center', 
+                });
+                var group = new fabric.Group([ obj_item, img, text ], {
+                    id: name,
+                    name : name,
                     street : street,
-                    direction : direction,                   
-                    width : parseInt(width)/4,
-                    height : parseInt(height)/4,
+                    direction: direction,
                     left: parseInt(left),
                     top: parseInt(top),
                     object_type : object_type,
@@ -555,17 +566,15 @@ function createObject() {
                     obj_type_desc : obj_type_desc,
                     obj_can_flag : obj_can_flag,
                     obj_image_flag : obj_image_flag,
-                    obj_image_path : obj_image_path,
                     obj_street_direction_flag : obj_street_direction_flag,
                     api_link : api_link,
-                    angle:angle,
+                    fill : fill_color,
+                    type_child: type,
+                    angle: angle,
                     scaleX:scale_x,
-                    scaleY:scale_y,
-                    fill: '',
-                    stroke : '#a8a9aa',
-                    strokeWidth : 0 , 
-                });
-                canvas.add(img);                    
+                    scaleY:scale_y
+                });        
+                canvas.add(group);                    
             }, {crossOrigin: 'anonymous'});
         }
         //end image/icon
@@ -1005,44 +1014,3 @@ function _init(){
     $('.obj_direction').hide();
 }
 _init();
-
-//image management 
-function readURL(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        
-        reader.onload = function (e) {
-            var base64_image = e.target.result;
-            $('#img-upload').attr('src', e.target.result);
-            uploadImage(base64_image);
-        }        
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-
-$("#imgInp").change(function(){
-    readURL(this);
-}); 
-
-function uploadImage(img_data){       
-    var url= '/campimageupload';
-    var old_image = $('#image_name').val();
-    $.ajax({
-        type: "POST",
-        url: url,
-        data: {
-            _token : token,
-            image : img_data,
-            old_image : old_image
-        },
-        dataType: "json",
-        success: function (res) {          
-           var image_name = res.image_name;
-           $('#image_name').val(image_name);
-           image_path = res.image_path;
-        },
-        error: function (res) {                        
-           console.log(res);
-        },
-    });
-}
