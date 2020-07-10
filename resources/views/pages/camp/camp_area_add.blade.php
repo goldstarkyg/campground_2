@@ -199,13 +199,13 @@
                                                     <button type="button" onClick="createObject()"  class="btn btn-warning pull-right"  title="Create/Update">Add/Update</button>                                              
                                                 </div>
                                             </div>
-                                            
+                                            <!--
                                             <div class="col-6">
                                                 <div class="form-group">                                  
                                                     <button type="button" id="getdata" onClick="getData()" class="btn btn-warning pull-right" title="Get Data">Get Data</button>
                                                 </div>
                                             </div>
-                                            
+                                            -->
                                         </div>    
                                     </div>                                    
                                 </div>

@@ -768,7 +768,8 @@ $('#camp_name').change(function(){
 function createCamp(data) {  
     canvas.clear().renderAll();
     canvas.hoverCursor = 'pointer';
-    var list = [];    
+    var list = [];  
+    var _count = 0;  
     for(var i = 0; i < data.length ; i++) {       
         var obj = data[i];
         var item = {};
@@ -816,12 +817,13 @@ function createCamp(data) {
                 if(obj.obj_image_flag == '0') {      
                     canvas.add(group);
                 }
-                //add iamge/icon
-                list[i] = {};        
-                list[i]['obj_item'] = obj_item;
-                list[i]['text'] = text;
-                list[i]['obj'] = obj;
+                //add iamge/icon               
                 if(obj.obj_image_flag == '1') {
+                    list[_count] = {};        
+                    list[_count]['obj_item'] = obj_item;
+                    list[_count]['text'] = text;
+                    list[_count]['obj'] = obj;
+                    _count++;
                     var count = 0;
                     fabric.Image.fromURL(obj.obj_image_path, function (img) {
                         obj_item = list[count]['obj_item'];
@@ -904,12 +906,13 @@ function createCamp(data) {
                 if(obj.obj_image_flag == '0') {        
                     canvas.add(group);
                 }
-                //add iamge/icon       
-                list[i] = {};        
-                list[i]['obj_item'] = obj_item;
-                list[i]['text'] = text;
-                list[i]['obj'] = obj;
+                //add iamge/icon                       
                 if(obj.obj_image_flag == '1') {
+                    list[_count] = {};        
+                    list[_count]['obj_item'] = obj_item;
+                    list[_count]['text'] = text;
+                    list[_count]['obj'] = obj;
+                    _count++;
                     var count = 0;
                     fabric.Image.fromURL(obj.obj_image_path, function (img) {                       
                         obj_item = list[count]['obj_item'];
