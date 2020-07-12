@@ -55,8 +55,8 @@ function createCamp(data) {
         item.direction = obj.direction;        
         item.width = parseInt(obj.width);
         item.height = parseInt(obj.height);
-        item.scaleX = obj.scaleX;
-        item.scaleY = obj.scaleY;        
+        // item.scaleX = obj.scaleX;
+        // item.scaleY = obj.scaleY;        
         item.fill = obj.fill;
         item.stroke = obj.stroke;
         item.strokeWidth = obj.strokeWidth; 
